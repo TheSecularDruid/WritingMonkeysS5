@@ -5,4 +5,4 @@ queue.o : queue.h
 	gcc queue.c -c -std=c99
 
 clean :
-	rm main queue.o queue.h.gch
+	rm main queue.o
