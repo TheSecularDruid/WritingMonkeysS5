@@ -1,7 +1,7 @@
 #define MAX_WORD_LENGTH 64
 
 struct cell{
-  char word[MAX_WORD_LENGTH];
+  char word[MAX_WORD_LENGTH+1];
   struct cell* next;
 };
 
