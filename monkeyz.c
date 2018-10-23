@@ -1,5 +1,5 @@
-#DEFINE FIFO queue_name         //replace queue_name with the actual name of the queue when implemented
-#DEFINE TEXTFILE filename.txt  //same, with the name of the file once it's created
+#define FIFO queue_name         //replace queue_name with the actual name of the queue when implemented
+#define TEXTFILE filename.txt  //same, with the name of the file once it's created
 //it is supposed that filename is opened in read mode for this program
 
 #include <stdio.h>
@@ -33,4 +33,3 @@ void filter_active_monkeys(struct monkey monkeyz[], int length){
       }
    }
 }
-

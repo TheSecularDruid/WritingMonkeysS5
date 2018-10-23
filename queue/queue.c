@@ -6,7 +6,6 @@
 void add_in_queue(struct cell* toAdd, struct queue* source)
 {
   toAdd->next = NULL;
-  source->last->next = toAdd;
   source->last = toAdd;
 }
 
@@ -29,7 +28,7 @@ int is_empty(struct queue source)
   return (source.first == NULL);
 }
 
-void init_queue(struct queue* source)
+void init_queue(struct queue* source) 
 {
   source->first = NULL;
   source->last = NULL;
