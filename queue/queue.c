@@ -29,8 +29,8 @@ int is_empty(struct queue source)
   return (source.first == NULL);
 }
 
-void init_queue(struct queue source)
+void init_queue(struct queue* source)
 {
-  source.first = NULL;
-  source.last = NULL;
+  source->first = NULL;
+  source->last = NULL;
 }
