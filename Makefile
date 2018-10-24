@@ -1,11 +1,11 @@
-main : queue.o
-	gcc queue.o main.c -std=c99 -o main
+test : queue.o
+	gcc queue.o main.c -std=c99 -o project
 
 queue.o : queue/queue.h
 	gcc queue/queue.c -c -std=c99
 
 clean :
-	rm main queue.o
+	rm project queue.o	
 
 
 test_monkeyz :
