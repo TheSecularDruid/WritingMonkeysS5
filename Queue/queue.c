@@ -11,6 +11,7 @@ void add_in_queue(struct cell* toAdd, struct queue* source)
     source->last->next = toAdd;
   source->last = toAdd;
   toAdd->next = NULL;
+  toAdd->was_read_by_statistician = 0;
 }
 
 void remove_in_queue(struct queue* source)
