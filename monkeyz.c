@@ -1,15 +1,4 @@
-#define FIFO queue_name         //replace queue_name with the actual name of the queue when implemented
-#define TEXTFILE filename.txt  //same, with the name of the file once it's created
-//it is supposed that filename is opened in read mode for this program
-
 #include <stdio.h>
-
-enum work { READER, STATISTICIAN, WRITTEN };
-
-struct monkey {
-   int status ;         //boolean, equals 0 if on strike, 1 if active
-   enum work work;      //his activity/role
-};
 
 void init_monkeys(struct monkey monkeyz[], int length){
    for (int i=0;i<length;i=i+1) {
@@ -17,19 +6,43 @@ void init_monkeys(struct monkey monkeyz[], int length){
       monkeyz[i].work = i ;      //each monkey is initialized with a different activity, granted there is as much or more activities than there are monkeys
    }
 }
+int read_already(struct cell cell) {
+   return cell.was_read_by_statistician;
+}
 
-void filter_active_monkeys(struct monkey monkeyz[], int length){
+void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_monkeyz[], int length, struct queue FIFO, struct cell mot){
+   int j = 0;
    for (int i=0;i<length;i=i+1) {
-      switch(monkeyz[i].work) {
+      switch(all_monkeyz[i].work) {
       case READER :
 	 if (fgets("",0,TEXTFILE)==NULL)
-	    monkeyz[i].status = 0
+	    all_monkeyz[i].status = 0;
+	 else {
+	    active_monkeyz[j] = all_monkeyz[i];
+	    j = j+1; }
 	 break;
       case STATISTICIAN :
-	 monkeyz[i].status = !isEmpty(FIFO);
+	 if (is_queue_empty(FIFO)||read_already( *(read_queue(FIFO)) ))
+	    all_monkeyz[i].status = 0;
+	 else {
+	    active_monkeyz[j] = all_monkeyz[i];
+	    j = j+1; } 
 	 break;
       case WRITTER :
-	 monkeyz[i].status = !isEmpty(FIFO)&&deja_lu(mot);  // !!! penser à définir deja_lu et à demander à Kais comment accéder à mot
+	 if (is_queue_empty(FIFO)||!read_already( *(read_queue(FIFO)) ))
+	    all_monkeyz[i].status = 0;
+	 else {
+	    active_monkeyz[j] = all_monkeyz[i];
+	    j = j + 1}
       }
    }
 }
+
+int writter_work(struct monkey monkey, struct queue FIFO){
+   if (monkey.work != READER)
+      return 1;
+   struct cell read_word = pop_queue(FIFO);
+   printf("%s", read_word.word)
+   monkey.printed_words += 1;   
+}
+

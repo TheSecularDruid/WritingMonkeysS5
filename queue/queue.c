@@ -39,3 +39,9 @@ void init_queue(struct queue* source)
   source->first = NULL;
   source->last = NULL;
 }
+
+struct cell pop_queue(struct queue source) {
+   struct cell popped = *(read_queue(source));
+   remove_in_queue(&source);
+   return popped;
+}
