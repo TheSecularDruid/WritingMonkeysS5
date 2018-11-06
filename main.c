@@ -14,16 +14,30 @@ int main(int argc, char** argv)
   struct queue main_queue;
   init_queue(&main_queue);
   printf("success whiled initializing the queue\n");
-  int error = reader_work(monkeyz[0],&main_queue,ptr);
-  if(error)
-    printf("Error : Monkey not a reader\n");
-  else
-    printf("success : reader work compiles\n");
-  error = reader_work(monkeyz[0],&main_queue,ptr);
-  if(error)
-    printf("Error : Monkey not a reader\n");
-  else
-    printf("success : reader work compiles\n");
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  reader_work(monkeyz[0],&main_queue,ptr);
+  
+
   print_queue(main_queue);
   purge_queue(&main_queue);
   fclose(ptr);

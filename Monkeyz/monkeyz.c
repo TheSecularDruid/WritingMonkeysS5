@@ -62,18 +62,28 @@ void read_a_word(char word[], FILE* filename)
 {
   int i = 0;
   int ch = 0;
-  while(!isspace(ch)){
+  while((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch)) ){
     ch = fgetc(filename);
-    word[i] = ch;
-    i++;
+    if(!isspace(ch) && !ispunct(ch)){
+      word[i] = ch;
+      i++;
+    }
   }
-  word[MAX_WORD_LENGTH+1] = 0;
+  word[i] = 0;
 }
 
+void to_lower_string(char* str)
+{
+  while(*str) {
+     *str = tolower(*str);
+     str++;
+  }
+}
 
 void create_cell(char* word, struct queue* main_queue)
 {
   struct cell* cell_to_add = malloc(sizeof(struct cell));
+  to_lower_string(word);
   strcpy(cell_to_add->word,word);
   add_in_queue(cell_to_add,main_queue);
 }
@@ -83,11 +93,17 @@ int reader_work(struct monkey reader_monkey, struct queue* main_queue, FILE* fil
    if(reader_monkey.work != READER)
       return 1;
 
-  char word[MAX_WORD_LENGTH+1];
+  char word[MAX_WORD_LENGTH+1] = "";
   read_a_word(word,filename);
   create_cell(word,main_queue);
   return 0;
 }
+
+//
+//-----------------
+// Debuggs functions
+//-----------------
+//
 
 void print_monkey(struct monkey monkey) {
    printf("status = %d, work = %d (0 = reader, 1 = statistician, 2 = writter, more = error, read_words = %d, printed_words = %d \n", monkey.status, monkey.work, monkey.read_words, monkey.printed_words);
