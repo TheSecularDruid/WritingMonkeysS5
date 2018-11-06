@@ -52,6 +52,11 @@ int writter_work(struct monkey monkey, struct queue FIFO){
 }
 
 
+//
+//--------------------------
+// Reader Monkey
+//--------------------------
+//
 
 void read_a_word(char word[], FILE* filename)
 {

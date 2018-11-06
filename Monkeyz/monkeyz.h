@@ -17,6 +17,12 @@ void init_monkeys(struct monkey monkeyz[], int length);
 int read_already(struct cell);
 void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_monkeyz[], int length, struct queue FIFO, struct cell mot, FILE* filename);
 int writter_work(struct monkey, struct queue FIFO);  //execute the work of a writter monkey
+
+//
+//--------------------
+//  Reader Monkey
+//--------------------
+//
 int reader_work(struct monkey reader_monkey, struct queue* main_queue, FILE* filename); //Does the work of a reader monkey
 void create_cell(char* word, struct queue* main_queue); //Create a cell, put a word in and add it to the queue
 void read_a_word(char* word, FILE* filename); //Read a single word (of a maximum length of MAX_WORD_LENGTH) from filename
