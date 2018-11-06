@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "Queue/queue.h"
 #include "Monkeyz/monkeyz.h"
 
 int main(int argc, char** argv)
 {
+   /* that is Kais' main
   FILE* ptr = fopen("source_text.txt","r");
   struct monkey monkeyz[3];
   printf("succes at opening file\n");
@@ -26,4 +28,22 @@ int main(int argc, char** argv)
   purge_queue(&main_queue);
   fclose(ptr);
   return EXIT_SUCCESS;
+   */
+
+   /* that is Raph's main */
+   FILE* read_file = fopen("source_text.txt", "r");
+   struct queue main_queue;
+   init_queue(&main_queue);
+   struct monkey test_monkeyz[3];
+   init_monkeys(test_monkeyz, 3);
+   struct monkey test_active_monkeyz[3];
+   filter_active_monkeys(test_monkeyz, test_active_monkeyz, 3, main_queue, read_file);
+   struct cell* test_cell = malloc(sizeof(struct cell));
+   strcpy(test_cell->word,"youhou");
+   test_cell->was_read_by_statistician = 1;
+   add_in_queue(test_cell, &main_queue);
+   writter_work(test_active_monkeyz[2], main_queue);
+   fclose(read_file);
+   printf("tout s'est bien passé \n");			 
+
 }
