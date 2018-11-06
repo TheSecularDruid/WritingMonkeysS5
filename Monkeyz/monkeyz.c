@@ -3,6 +3,7 @@
 #include "monkeyz.h"
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 void init_monkeys(struct monkey monkeyz[], int length){
    for (int i=0;i<length;i=i+1) {
@@ -46,34 +47,30 @@ int writter_work(struct monkey monkey, struct queue FIFO){
    if (monkey.work != READER)
       return 1;
    struct cell read_word = pop_queue(FIFO);
-   printf("%s", read_word.word);
    monkey.printed_words += 1;
    return 0;
 }
 
 
 
-void read_a_word(char* word, FILE* filename)
+void read_a_word(char word[], FILE* filename)
 {
-  for(int i = 0; i < MAX_WORD_LENGTH; i++){
-    char* buffer = malloc(sizeof(char*));
-    fgets(buffer, 1, filename);
-    printf("%s\n",buffer);
-    if(*buffer ==  ' ')
-      break;
-    else
-      word[i] = *buffer;
-    free(buffer);
-    }
-    word[MAX_WORD_LENGTH+1] = 0;
+  int i = 0;
+  int ch = 0;
+  while(!isspace(ch)){
+    ch = fgetc(filename);
+    word[i] = ch;
+    i++;
+  }
+  word[MAX_WORD_LENGTH+1] = 0;
 }
+
 
 void create_cell(char* word, struct queue* main_queue)
 {
   struct cell* cell_to_add = malloc(sizeof(struct cell));
   strcpy(cell_to_add->word,word);
   add_in_queue(cell_to_add,main_queue);
-  printf("cell_to_add word : %s\n",cell_to_add->word);
 }
 
 int reader_work(struct monkey reader_monkey, struct queue* main_queue, FILE* filename)

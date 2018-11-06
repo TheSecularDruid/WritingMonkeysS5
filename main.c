@@ -12,8 +12,18 @@ int main(int argc, char** argv)
   struct queue main_queue;
   init_queue(&main_queue);
   printf("success whiled initializing the queue\n");
-  reader_work(monkeyz[0],&main_queue,ptr);
-  printf("success : reader work compiles\n");
-
+  int error = reader_work(monkeyz[0],&main_queue,ptr);
+  if(error)
+    printf("Error : Monkey not a reader\n");
+  else
+    printf("success : reader work compiles\n");
+  error = reader_work(monkeyz[0],&main_queue,ptr);
+  if(error)
+    printf("Error : Monkey not a reader\n");
+  else
+    printf("success : reader work compiles\n");
+  print_queue(main_queue);
+  purge_queue(&main_queue);
+  fclose(ptr);
   return EXIT_SUCCESS;
 }

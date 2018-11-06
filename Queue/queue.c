@@ -46,3 +46,20 @@ struct cell pop_queue(struct queue source) {
    remove_in_queue(&source);
    return popped;
 }
+
+void print_queue(struct queue queue_to_print)
+{
+  struct cell* ptr = queue_to_print.first;
+  while(ptr != queue_to_print.last){
+    printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
+    ptr = ptr->next;
+  }
+  printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
+}
+
+void purge_queue(struct queue* queue_to_purge)
+{
+  while(!is_queue_empty(*queue_to_purge)){
+    remove_in_queue(queue_to_purge);
+  }
+}
