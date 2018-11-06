@@ -39,11 +39,23 @@ int main(int argc, char** argv)
    struct monkey test_active_monkeyz[3];
    filter_active_monkeys(test_monkeyz, test_active_monkeyz, 3, main_queue, read_file);
    struct cell* test_cell = malloc(sizeof(struct cell));
+   struct cell* test_cell2 = malloc(sizeof(struct cell));
    strcpy(test_cell->word,"youhou");
+   strcpy(test_cell2->word, "second");
+   printf("jusqu'ici tout va bien\n");
    test_cell->was_read_by_statistician = 1;
+   test_cell2->was_read_by_statistician = 1;
    add_in_queue(test_cell, &main_queue);
-   writter_work(test_active_monkeyz[2], main_queue);
+   add_in_queue(test_cell2, &main_queue);
+   printf("la queue est chargée\n");
+   print_queue(main_queue);
+   printf("le singe selectionné est un %d", test_monkeyz[2].work);
+   int error1 = writter_work(test_monkeyz[2], &main_queue);
+   print_queue(main_queue);
+   int error2 = writter_work(test_monkeyz[2], &main_queue);
+   print_queue(main_queue);
    fclose(read_file);
-   printf("tout s'est bien passé \n");			 
-
+   printf("tout s'est bien passé \n");
+   printf("mais les erreurs sont %d et %d", error1, error2);
+   print_queue(main_queue);
 }

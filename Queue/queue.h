@@ -19,7 +19,7 @@ void remove_in_queue(struct queue* source); //Removing the oldest cell of the qu
 struct cell* read_queue(struct queue source); //Reading the oldest cell of the queue
 int is_queue_empty(struct queue source); //Checking if the queue is empty
 void init_queue(struct queue* source); //Initializing the queue properly
-struct cell pop_queue(struct queue source); //Just a pop goddamit
+struct cell pop_queue(struct queue* source); //Just a pop goddamit (yet I couldn't do it properly)
 void print_queue(struct queue queue_to_print); //print the queue
 void purge_queue(struct queue* queue_to_purge); //Purge (delete all cells) the queue
 

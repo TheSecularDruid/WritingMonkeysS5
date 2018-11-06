@@ -15,7 +15,7 @@ int read_already(struct cell cell) {
    return cell.was_read_by_statistician;
 }
 
-void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_monkeyz[], int length, struct queue FIFO, struct cell mot, FILE* filename){
+void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_monkeyz[], int length, struct queue FIFO, FILE* filename){
    int j = 0;
    for (int i=0;i<length;i=i+1) {
       switch(all_monkeyz[i].work) {
@@ -43,8 +43,8 @@ void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_mon
   }
 }
 
-int writter_work(struct monkey monkey, struct queue FIFO){
-   if (monkey.work != READER)
+int writter_work(struct monkey monkey, struct queue* FIFO){
+   if (monkey.work != WRITTER)
       return 1;
    struct cell read_word = pop_queue(FIFO);
    monkey.printed_words += 1;
@@ -80,11 +80,19 @@ void create_cell(char* word, struct queue* main_queue)
 
 int reader_work(struct monkey reader_monkey, struct queue* main_queue, FILE* filename)
 {
-  if(reader_monkey.work != READER)
-    return 1;
+   if(reader_monkey.work != READER)
+      return 1;
 
   char word[MAX_WORD_LENGTH+1];
   read_a_word(word,filename);
   create_cell(word,main_queue);
   return 0;
+}
+
+void print_monkey(struct monkey monkey) {
+   printf("status = %d, work = %d (0 = reader, 1 = statistician, 2 = writter, more = error, read_words = %d, printed_words = %d \n", monkey.status, monkey.work, monkey.read_words, monkey.printed_words);
+}
+
+void print_monkeys(struct monkey monkeyz[], int length) {
+   for (int i = 0; i<length; i+=1) print_monkey(monkeyz[i]);
 }

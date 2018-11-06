@@ -41,20 +41,24 @@ void init_queue(struct queue* source)
   source->last = NULL;
 }
 
-struct cell pop_queue(struct queue source) {
-   struct cell popped = *(read_queue(source));
-   remove_in_queue(&source);
+struct cell pop_queue(struct queue* source) {
+   struct cell popped = *(read_queue(*source));
+   remove_in_queue(source);
    return popped;
 }
 
 void print_queue(struct queue queue_to_print)
 {
-  struct cell* ptr = queue_to_print.first;
-  while(ptr != queue_to_print.last){
-    printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
-    ptr = ptr->next;
-  }
-  printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
+   if (!is_queue_empty(queue_to_print)){
+      struct cell* ptr = queue_to_print.first;
+      while(ptr != queue_to_print.last){
+	 printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
+	 ptr = ptr->next;
+      }
+      printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
+   }
+   else
+      printf("the queue is empty \n");
 }
 
 void purge_queue(struct queue* queue_to_purge)
