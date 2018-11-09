@@ -39,7 +39,7 @@ void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_mon
 	    active_monkeyz[j] = all_monkeyz[i];
 	    j = j+1; }
 	 break;
-      case WRITTER :
+      case PRINTER :
 	 if (is_queue_empty(FIFO)||!read_already( *(read_queue(FIFO)) ))
 	    all_monkeyz[i].status = 0;
 	 else {
@@ -47,20 +47,6 @@ void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_mon
 	    j = j + 1; }
     }
   }
-}
-
-//
-//-----------
-// Writer Monkey
-//-----------
-//
-
-int writter_work(struct monkey monkey, struct queue* FIFO){
-   if (monkey.work != WRITTER)
-      return 1;
-   struct cell read_word = pop_queue(FIFO);
-   monkey.printed_words += 1;
-   return 0;
 }
 
 
@@ -118,7 +104,35 @@ int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* fi
 //--------
 //
 
+int statistician_work(struct monkey monkey, struct queue* stats, struct queue* main_queue) {
+   if (monkey.work != STATISTICIAN)
+      return 1;
+   struct cell* first_word = malloc(sizeof(struct cell));
+   cell_cpy(read_queue(*main_queue),first_word);
+   struct cell* cell_to_inc = research_in_queue(*stats, first_word->word);
+   if (cell_to_inc != NULL)
+      cell_to_inc->was_read_by_statistician += 1;
+   else {
+      add_in_queue (first_word, stats);
+      stats->last->was_read_by_statistician += 1;
+   }
+   main_queue->first->was_read_by_statistician = 1;
+}
 
+
+//
+//-----------
+// Printer Monkey
+//-----------
+//
+
+int printer_work(struct monkey* monkey, struct queue* FIFO){
+   if (monkey->work != PRINTER)
+      return 1;
+   struct cell read_word = pop_queue(FIFO);
+   monkey->printed_words += 1;
+   return 0;
+}
 
 
 //
