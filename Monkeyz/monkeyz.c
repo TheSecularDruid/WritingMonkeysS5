@@ -100,6 +100,15 @@ int reader_work(struct monkey reader_monkey, struct queue* main_queue, FILE* fil
 }
 
 //
+//--------
+// Statistician Monkey
+//--------
+//
+
+
+
+
+//
 //-----------------
 // Debuggs functions
 //-----------------
