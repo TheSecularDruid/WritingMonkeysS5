@@ -23,6 +23,6 @@ struct cell pop_queue(struct queue* source); //Just a pop goddamit (yet I couldn
 void print_queue(struct queue queue_to_print); //print the queue
 void purge_queue(struct queue* queue_to_purge); //Purge (delete all cells) the queue
 struct cell* research_in_queue(struct queue source, char* word_to_search); //Search a cell in a queue, return NULL if the word of the cell isn't found, the adress to the cell otherwise
-struct cell* cell_cpy(struct cell* source, struct cell* dest);
+void cell_cpy(struct cell* source, struct cell* dest); //Copy a cell
 
 #endif
