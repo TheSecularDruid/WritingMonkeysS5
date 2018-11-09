@@ -84,7 +84,14 @@ struct cell* research_in_queue(struct queue source, char* word_to_search)
 
 void cell_cpy(struct cell* source, struct cell* dest)
 {
-  strcpy(source->word,dest->word);
+  strcpy(dest->word,source->word);
   dest->was_read_by_statistician = source->was_read_by_statistician;
   dest->next = source->next;
+}
+
+void print_cell(struct cell cell_to_print)
+{
+  printf("Cell at %p (%d) : \n",&cell_to_print,&cell_to_print);
+  printf("Word : %s\n",cell_to_print.word);
+  printf("Next : %p (%d)\n",cell_to_print.next,cell_to_print.next);
 }
