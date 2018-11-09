@@ -73,11 +73,11 @@ struct cell* research_in_queue(struct queue source, char* word_to_search)
 {
   struct cell* ptr = source.first;
   if(!is_queue_empty(source)){
-    do{
+    while(ptr != NULL){
       if(strcmp(word_to_search,ptr->word) == 0)
         return ptr;
       ptr = ptr->next;
-    }while(ptr->next != NULL);
+    }
   }
   return NULL;
 }
