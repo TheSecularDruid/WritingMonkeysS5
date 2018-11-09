@@ -5,6 +5,12 @@
 #include <stdlib.h>
 #include <ctype.h>
 
+//
+//------
+// Monkeyz global functions
+//------
+//
+
 void init_monkeys(struct monkey monkeyz[], int length){
    for (int i=0;i<length;i=i+1) {
       monkeyz[i].status = 1;
@@ -42,6 +48,12 @@ void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_mon
     }
   }
 }
+
+//
+//-----------
+// Writer Monkey
+//-----------
+//
 
 int writter_work(struct monkey monkey, struct queue* FIFO){
    if (monkey.work != WRITTER)
