@@ -53,10 +53,10 @@ void print_queue(struct queue queue_to_print)
   if (!is_queue_empty(queue_to_print)){
     struct cell* ptr = queue_to_print.first;
     while(ptr != queue_to_print.last){
-      printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
+      printf("cell %d : %s ; was read by statistician : %d | next : %d\n",ptr,ptr->word,ptr->was_read_by_statistician,ptr->next);
       ptr = ptr->next;
     }
-    printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
+    printf("cell %d : %s ; was read by statistician : %d | next : %d\n",ptr,ptr->word,ptr->was_read_by_statistician,ptr->next);
   }
   else
     printf("The queue is empty \n");
@@ -93,5 +93,6 @@ void print_cell(struct cell cell_to_print)
 {
   printf("Cell at %p (%d) : \n",&cell_to_print,&cell_to_print);
   printf("Word : %s\n",cell_to_print.word);
+  printf("Was Read By Statistician : %d\n",cell_to_print.was_read_by_statistician);
   printf("Next : %p (%d)\n",cell_to_print.next,cell_to_print.next);
 }
