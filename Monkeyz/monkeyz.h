@@ -24,7 +24,7 @@ int writter_work(struct monkey monkey, struct queue* FIFO);  //execute the work 
 //  Reader Monkey
 //--------------------
 //
-int reader_work(struct monkey reader_monkey, struct queue* main_queue, FILE* filename); //Does the work of a reader monkey
+int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* filename); //Does the work of a reader monkey
 void create_cell(char* word, struct queue* main_queue); //Create a cell, put a word in and add it to the queue
 void read_a_word(char* word, FILE* filename); //Read a single word (of a maximum length of MAX_WORD_LENGTH) from filename
 void print_monkey(struct monkey monkey); //Print the data contained in a struct monkey

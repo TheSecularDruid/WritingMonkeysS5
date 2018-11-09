@@ -100,14 +100,15 @@ void create_cell(char* word, struct queue* main_queue)
   add_in_queue(cell_to_add,main_queue);
 }
 
-int reader_work(struct monkey reader_monkey, struct queue* main_queue, FILE* filename)
+int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* filename)
 {
-   if(reader_monkey.work != READER)
+   if(reader_monkey->work != READER)
       return 1;
 
   char word[MAX_WORD_LENGTH+1] = "";
   read_a_word(word,filename);
   create_cell(word,main_queue);
+  reader_monkey->read_words = reader_monkey->read_words + 1;
   return 0;
 }
 
