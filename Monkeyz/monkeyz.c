@@ -6,9 +6,9 @@
 #include <ctype.h>
 
 //
-//------
+//-------------------------
 // Monkeyz global functions
-//------
+//-------------------------
 //
 
 void init_monkeys(struct monkey monkeyz[], int length){

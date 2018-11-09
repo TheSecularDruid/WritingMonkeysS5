@@ -16,18 +16,43 @@ int main(int argc, char** argv)
    init_monkeys(test_monkeyz, 3);
    struct monkey test_active_monkeyz[3];
    filter_active_monkeys(test_monkeyz, test_active_monkeyz, 3, main_queue, read_file);
+   printf("pas d'erreur à l'initialisation\n");
 
-
-   reader_work(test_monkeyz[0],&main_queue,read_file);
-   reader_work(test_monkeyz[0],&main_queue,read_file);
-   reader_work(test_monkeyz[0],&main_queue,read_file);
-   reader_work(test_monkeyz[0],&main_queue,read_file);
-
-   struct cell* ptr = research_in_queue(main_queue,"sdaada");
+   //effective main
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
+   printer_work(&test_monkeyz[2], &main_queue);
+   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
+   printer_work(&test_monkeyz[2], &main_queue);
+   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
+   printer_work(&test_monkeyz[2], &main_queue);
+   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
+   printer_work(&test_monkeyz[2], &main_queue);
+   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
+   printer_work(&test_monkeyz[2], &main_queue);
+   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
+   printer_work(&test_monkeyz[2], &main_queue);
+   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
+   printer_work(&test_monkeyz[2], &main_queue);
+   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
+   printer_work(&test_monkeyz[2], &main_queue);
    print_queue(main_queue);
-   printf("found or not ? : %d\n",ptr);
+   printf("\n ligne qui sert à rien \n");
+   print_queue(stats_queue);
+   printf("\n");
+   printf("ça a marché\n");
+
+   
 
    //Purge
    purge_queue(&main_queue);
    purge_queue(&stats_queue);
+   fclose(read_file);
 }
