@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "queue.h"
+#include <string.h>
 
 
 void add_in_queue(struct cell* toAdd, struct queue* source)
@@ -49,16 +50,16 @@ struct cell pop_queue(struct queue* source) {
 
 void print_queue(struct queue queue_to_print)
 {
-   if (!is_queue_empty(queue_to_print)){
-      struct cell* ptr = queue_to_print.first;
-      while(ptr != queue_to_print.last){
-	 printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
-	 ptr = ptr->next;
-      }
+  if (!is_queue_empty(queue_to_print)){
+    struct cell* ptr = queue_to_print.first;
+    while(ptr != queue_to_print.last){
       printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
-   }
-   else
-      printf("the queue is empty \n");
+      ptr = ptr->next;
+    }
+    printf("cell %d : %s | next : %d\n",ptr,ptr->word,ptr->next);
+  }
+  else
+    printf("The queue is empty \n");
 }
 
 void purge_queue(struct queue* queue_to_purge)
@@ -66,4 +67,17 @@ void purge_queue(struct queue* queue_to_purge)
   while(!is_queue_empty(*queue_to_purge)){
     remove_in_queue(queue_to_purge);
   }
+}
+
+struct cell* research_in_queue(struct queue source, char* word_to_search)
+{
+  struct cell* ptr = source.first;
+  if(!is_queue_empty(source)){
+    while(ptr->next != NULL){
+      if(strcmp(word_to_search,ptr->word) == 0)
+        return ptr;
+      ptr = ptr->next;
+    }
+  }
+  return NULL;
 }

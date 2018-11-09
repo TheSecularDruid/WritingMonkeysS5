@@ -13,6 +13,7 @@ struct monkey {
    int printed_words;
 };
 
+
 void init_monkeys(struct monkey monkeyz[], int length);
 int read_already(struct cell);
 void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_monkeyz[], int length, struct queue FIFO, FILE* filename);
@@ -31,4 +32,3 @@ void print_monkeys(struct monkey monkeyz[], int length); //print a table of monk
 
 
 #endif
-
