@@ -86,4 +86,5 @@ void cell_cpy(struct cell* source, struct cell* dest)
 {
   strcpy(source->word,dest->word);
   dest->was_read_by_statistician = source->was_read_by_statistician;
+  dest->next = source->next;
 }
