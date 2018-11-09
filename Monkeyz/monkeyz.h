@@ -20,6 +20,8 @@ struct monkey {
 void init_monkeys(struct monkey monkeyz[], int length);
 int read_already(struct cell);
 void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_monkeyz[], int length, struct queue FIFO, FILE* filename);
+int writter_work(struct monkey monkey, struct queue* FIFO);  //execute the work of a writter monkey
+void work(struct monkey* monkeyz); // Principal work function for the monkey
 
 //
 //--------------------
@@ -44,4 +46,3 @@ void print_monkeys(struct monkey monkeyz[], int length); //print a table of monk
 
 
 #endif
-
