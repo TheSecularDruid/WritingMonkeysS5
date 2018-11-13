@@ -28,6 +28,11 @@ void print_args(int argc, char* argv[])
   }
 }
 
+void print_usage()
+{
+  printf("Usage : ./project [-s] FILE\n");
+}
+
 
 int main(int argc, char* argv[])
 {
@@ -35,12 +40,10 @@ int main(int argc, char* argv[])
   FILE* read_file = NULL;
   int seed_rng;
   if(argc != 2 && argc != 4){
-    printf("Nombre d'arguments incorrect\n");
-    return 2;
+    usage();
+    return EXIT_SUCCESS;
   }
   int error_code = reading_arguments(&seed_rng, &read_file, argc, argv);
-  printf("arg -s : %d\n", seed_rng);
-  printf("FILE arg : %p\n",read_file);
   if(error_code == 1){
     printf("Erreur lors de la lecture des arguments\n");
     return 3;
