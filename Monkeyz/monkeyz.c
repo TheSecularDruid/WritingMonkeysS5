@@ -97,14 +97,14 @@ void read_a_word(char word[], FILE* filename)
 {
   int i = 0;
   int ch = 0;
-  while((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch)) ){
-    ch = fgetc(filename);
+  while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch))) ){
     if(!isspace(ch) && !ispunct(ch)){
       word[i] = ch;
       i++;
     }
   }
   word[i] = 0;
+  //printf("read_a_word\n");
 }
 
 void to_lower_string(char* str)
@@ -186,5 +186,3 @@ void print_monkey(struct monkey monkey) {
 void print_monkeys(struct monkey monkeyz[], int length) {
    for (int i = 0; i<length; i+=1) print_monkey(monkeyz[i]);
 }
-
-
