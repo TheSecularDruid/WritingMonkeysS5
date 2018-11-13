@@ -40,7 +40,7 @@ int main(int argc, char* argv[])
   FILE* read_file = NULL;
   int seed_rng;
   if(argc != 2 && argc != 4){
-    usage();
+    print_usage();
     return EXIT_SUCCESS;
   }
   int error_code = reading_arguments(&seed_rng, &read_file, argc, argv);
