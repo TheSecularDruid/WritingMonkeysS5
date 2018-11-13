@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <time.h>
 
 //
 //-------------------------
@@ -15,6 +16,8 @@ void init_monkeys(struct monkey monkeyz[], int length){
    for (int i=0;i<length;i=i+1) {
       monkeyz[i].status = 1;
       monkeyz[i].work = i ;      //each monkey is initialized with a different activity, granted there is as much or more activities than there are monkeys
+      monkeyz[i].read_words = 0;
+      monkeyz[i].printed_words = 0;
    }
 }
 int read_already(struct cell cell) {
@@ -23,9 +26,9 @@ int read_already(struct cell cell) {
 
 void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIFO, FILE* filename){
    for (int i=0;i<length;i=i+1) {
-      switch(all_monkeyz[i].work) {
+      switch(monkeyz[i].work) {
       case READER :
-    	 if (fgets("",0,filename)==NULL)
+    	 if (feof(filename)!=0)
     	    monkeyz[i].status = 0;
     	 else {
     	    monkeyz[i].status = 1;
@@ -33,14 +36,14 @@ void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIF
     	 break;
           case STATISTICIAN :
     	 if (is_queue_empty(FIFO)||read_already( *(read_queue(FIFO)) ))
-    	    all_monkeyz[i].status = 0;
+    	    monkeyz[i].status = 0;
     	 else {
          monkeyz[i].status = 1;
     	 }
     	 break;
           case PRINTER :
     	 if (is_queue_empty(FIFO)||!read_already( *(read_queue(FIFO)) ))
-    	    all_monkeyz[i].status = 0;
+    	    monkeyz[i].status = 0;
     	 else {
          monkeyz[i].status = 1;
       }
@@ -48,7 +51,7 @@ void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIF
   }
 }
 
-void all_on_strike(struct monkey monkeyz[], int length)
+int all_on_strike(struct monkey monkeyz[], int length)
 {
   for(int i = 0; i < length; i++){
     if(monkeyz[i].status == 1)
@@ -57,17 +60,33 @@ void all_on_strike(struct monkey monkeyz[], int length)
   return 1;
 }
 
-void work(struct monkey* monkeyz)
+void work(struct monkey* monkey, struct queue* main_queue, struct queue* stats, FILE* filename)
 {
-  switch (monkeyz->work) {
+  switch (monkey->work) {
     case READER:
-      reader_work(monkeyz);
-    case PRINTER:
-      printer_work(monkeyz);
+       reader_work(monkey, main_queue, filename);
     case STATISTICIAN:
-      statistician_work(monkeyz);
+       statistician_work(*monkey,stats, main_queue);
+    case PRINTER:
+       printer_work(monkey, main_queue);
   }
 }
+
+struct monkey random_select(struct monkey monkeyz[], int length) {
+   int nb_actives = 0;
+   int active_monkeyz[length];
+   for (int i=0;i<length; i++) {
+      if (monkeyz[i].status==1) {
+	 active_monkeyz[nb_actives] = i;
+	 nb_actives += 1;
+      }
+   }
+   printf("avant le rand tout va bien \n");
+   srand(time(NULL));
+   printf("rand initialisé \n");
+   return (monkeyz[active_monkeyz[rand()%nb_actives]]);
+}
+
 
 
 //
@@ -150,6 +169,7 @@ int printer_work(struct monkey* monkey, struct queue* FIFO){
    if (monkey->work != PRINTER)
       return 1;
    struct cell read_word = pop_queue(FIFO);
+   printf("%s ", read_word);
    monkey->printed_words += 1;
    return 0;
 }
@@ -162,9 +182,11 @@ int printer_work(struct monkey* monkey, struct queue* FIFO){
 //
 
 void print_monkey(struct monkey monkey) {
-   printf("status = %d, work = %d (0 = reader, 1 = statistician, 2 = writter, more = error, read_words = %d, printed_words = %d \n", monkey.status, monkey.work, monkey.read_words, monkey.printed_words);
+   printf("status = %d, work = %d (0 = reader, 1 = statistician, 2 = printer, more = error, read_words = %d, printed_words = %d \n", monkey.status, monkey.work, monkey.read_words, monkey.printed_words);
 }
 
 void print_monkeys(struct monkey monkeyz[], int length) {
    for (int i = 0; i<length; i+=1) print_monkey(monkeyz[i]);
 }
+
+
