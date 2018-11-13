@@ -21,43 +21,51 @@ int read_already(struct cell cell) {
    return cell.was_read_by_statistician;
 }
 
-void filter_active_monkeys(struct monkey all_monkeyz[], struct monkey active_monkeyz[], int length, struct queue FIFO, FILE* filename){
-   int j = 0;
+void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIFO, FILE* filename){
    for (int i=0;i<length;i=i+1) {
       switch(all_monkeyz[i].work) {
       case READER :
     	 if (fgets("",0,filename)==NULL)
-    	    all_monkeyz[i].status = 0;
+    	    monkeyz[i].status = 0;
     	 else {
-    	    active_monkeyz[j] = all_monkeyz[i];
-    	    j = j+1; }
+    	    monkeyz[i].status = 1;
+    	 }
     	 break;
           case STATISTICIAN :
     	 if (is_queue_empty(FIFO)||read_already( *(read_queue(FIFO)) ))
     	    all_monkeyz[i].status = 0;
     	 else {
-    	    active_monkeyz[j] = all_monkeyz[i];
-    	    j = j+1; }
+         monkeyz[i].status = 1;
+    	 }
     	 break;
           case PRINTER :
     	 if (is_queue_empty(FIFO)||!read_already( *(read_queue(FIFO)) ))
     	    all_monkeyz[i].status = 0;
     	 else {
-    	    active_monkeyz[j] = all_monkeyz[i];
-    	    j = j + 1; }
+         monkeyz[i].status = 1;
+      }
     }
   }
+}
+
+void all_on_strike(struct monkey monkeyz[], int length)
+{
+  for(int i = 0; i < length; i++){
+    if(monkeyz[i].status == 1)
+      return 0;
+  }
+  return 1;
 }
 
 void work(struct monkey* monkeyz)
 {
   switch (monkeyz->work) {
-    case WORK:
-      reader_work(monkeyz);
-    case STATISTICIAN:
-      statistician_work(monkeyz);
     case READER:
       reader_work(monkeyz);
+    case PRINTER:
+      printer_work(monkeyz);
+    case STATISTICIAN:
+      statistician_work(monkeyz);
   }
 }
 

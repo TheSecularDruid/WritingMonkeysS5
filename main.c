@@ -12,47 +12,20 @@ int main(int argc, char** argv)
    struct queue stats_queue;
    init_queue(&main_queue);
    init_queue(&stats_queue);
-   struct monkey test_monkeyz[3];
-   init_monkeys(test_monkeyz, 3);
-   struct monkey test_active_monkeyz[3];
-   filter_active_monkeys(test_monkeyz, test_active_monkeyz, 3, main_queue, read_file);
-   printf("pas d'erreur à l'initialisation\n");
+   struct monkey monkeyz[3];
+   init_monkeys(monkeyz, 3);
+   //End-Init
 
-   //effective main
-   reader_work(&test_monkeyz[0], &main_queue, read_file);
-   reader_work(&test_monkeyz[0], &main_queue, read_file);
-   reader_work(&test_monkeyz[0], &main_queue, read_file);
-   reader_work(&test_monkeyz[0], &main_queue, read_file);
-   reader_work(&test_monkeyz[0], &main_queue, read_file);
-   reader_work(&test_monkeyz[0], &main_queue, read_file);
-   reader_work(&test_monkeyz[0], &main_queue, read_file);
-   reader_work(&test_monkeyz[0], &main_queue, read_file);
-   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
-   printer_work(&test_monkeyz[2], &main_queue);
-   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
-   printer_work(&test_monkeyz[2], &main_queue);
-   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
-   printer_work(&test_monkeyz[2], &main_queue);
-   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
-   printer_work(&test_monkeyz[2], &main_queue);
-   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
-   printer_work(&test_monkeyz[2], &main_queue);
-   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
-   printer_work(&test_monkeyz[2], &main_queue);
-   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
-   printer_work(&test_monkeyz[2], &main_queue);
-   statistician_work(test_monkeyz[1], &stats_queue, &main_queue);
-   printer_work(&test_monkeyz[2], &main_queue);
-   print_queue(main_queue);
-   printf("\n ligne qui sert à rien \n");
-   print_queue(stats_queue);
-   printf("\n");
-   printf("ça a marché\n");
+   while(!all_on_strike(monkeyz)){
+        filter_active_monkeys(monkeyz, 3, main_queue, read_file);
+        struct monkey* happy_selected_monkey = random_select(struct monkey monkeyz[], int length);
+        work(happy_selected_monkey);
+   }
 
-   
 
    //Purge
    purge_queue(&main_queue);
    purge_queue(&stats_queue);
    fclose(read_file);
+   //End-Purge
 }
