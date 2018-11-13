@@ -72,7 +72,7 @@ void work(struct monkey* monkey, struct queue* main_queue, struct queue* stats, 
   }
 }
 
-struct monkey random_select(struct monkey monkeyz[], int length) {
+struct monkey* random_select(struct monkey monkeyz[], int length) {
    int nb_actives = 0;
    int active_monkeyz[length];
    for (int i=0;i<length; i++) {
@@ -82,7 +82,7 @@ struct monkey random_select(struct monkey monkeyz[], int length) {
       }
    }
    srand(time(NULL));
-   return (monkeyz[active_monkeyz[rand()%nb_actives]]);
+   return &monkeyz[active_monkeyz[rand()%nb_actives]];
 }
 
 
