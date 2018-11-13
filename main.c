@@ -67,6 +67,7 @@ int main(int argc, char* argv[])
     work(&happy_selected_monkey, &main_queue, &stats_queue, read_file);
     filter_active_monkeys(monkeyz, 3, main_queue, read_file);
   }
+  printf("read words : %d\n",monkeyz[0].read_words);
 
   //Purge
   purge_queue(&main_queue);
