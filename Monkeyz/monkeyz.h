@@ -38,7 +38,7 @@ int statistician_work(struct monkey monkey, struct queue* stats, struct queue* m
 //
 //  Printer Monkey
 //
-int printer_work(struct monkey* monkey, struct queue* FIFO);  //execute the work of a printer monkey
+int printer_work(struct monkey* monkey, struct queue* main_queue);  //execute the work of a printer monkey
 
 //
 //-----------------------

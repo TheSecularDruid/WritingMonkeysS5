@@ -81,9 +81,7 @@ struct monkey random_select(struct monkey monkeyz[], int length) {
 	 nb_actives += 1;
       }
    }
-   printf("avant le rand tout va bien \n");
    srand(time(NULL));
-   printf("rand initialisé \n");
    return (monkeyz[active_monkeyz[rand()%nb_actives]]);
 }
 
@@ -165,11 +163,11 @@ int statistician_work(struct monkey monkey, struct queue* stats, struct queue* m
 //-----------
 //
 
-int printer_work(struct monkey* monkey, struct queue* FIFO){
+int printer_work(struct monkey* monkey, struct queue* main_queue){
    if (monkey->work != PRINTER)
       return 1;
-   struct cell read_word = pop_queue(FIFO);
-   printf("%s ", read_word);
+   struct cell read_word = pop_queue(main_queue);
+   printf("%s ", read_word.word);
    monkey->printed_words += 1;
    return 0;
 }
