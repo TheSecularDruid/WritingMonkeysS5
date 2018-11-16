@@ -34,6 +34,18 @@ void print_usage()
 }
 
 
+void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ) {
+   printf("Nombre de mots lus : %d \n", monkeyz[0].read_words);
+   printf("Nombre de mots imprimés : %d \n", monkeyz[2].printed_words);
+   printf("Nombre de mots différents : %d \n", length_queue(stats));
+   printf("Multiplicité la plus grande : %d \n", max_occ.first->was_read_by_statistician);
+   printf("atteinte par les mots : ");
+   print_queue_light(max_occ);
+   printf("Multiplicité la plus petite : %d \n", min_occ.first->was_read_by_statistician);
+   printf("atteinte par les mots : ");
+   print_queue_light(min_occ);
+}
+
 int main(int argc, char* argv[])
 {
   //Initialization
@@ -57,8 +69,12 @@ int main(int argc, char* argv[])
   }
   struct queue main_queue;
   struct queue stats_queue;
+  struct queue words_of_max_occurency;
+  struct queue words_of_min_occurency;
   init_queue(&main_queue);
   init_queue(&stats_queue);
+  init_queue(&words_of_max_occurency);
+  init_queue(&words_of_min_occurency);
   struct monkey monkeyz[3];
   init_monkeys(monkeyz, 3);
   //End of Initialization
@@ -70,24 +86,13 @@ int main(int argc, char* argv[])
     work(happy_selected_monkey, &main_queue, &stats_queue, read_file);
     filter_active_monkeys(monkeyz, 3, main_queue, read_file);
   }
-  printf("\nWords Read : %d\n",monkeyz[0].read_words);
-  struct queue max_occurency_queue;
-  struct queue min_occurency_queue;
-  init_queue(&max_occurency_queue);
-  init_queue(&min_occurency_queue);
-
-  greatest_occurency(stats_queue,&max_occurency_queue);
-  minimal_occurency(stats_queue,&min_occurency_queue);
-  printf("Maximum Occurency : \n");
-  print_queue(max_occurency_queue);
-  printf("Minimum Occurency : \n");
-  print_queue(min_occurency_queue);
+  total_print(monkeyz, stats_queue, words_of_max_occurency, words_of_min_occurency);
 
   //Purge
   purge_queue(&main_queue);
   purge_queue(&stats_queue);
-  purge_queue(&min_occurency_queue);
-  purge_queue(&max_occurency_queue);
+  purge_queue(&words_of_max_occurency);
+  purge_queue(&words_of_min_occurency);
   fclose(read_file);
   return EXIT_SUCCESS;
   //End-Purge

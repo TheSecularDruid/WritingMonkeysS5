@@ -18,7 +18,11 @@ int main(int argc, char** argv)
 
    //effective main
    reader_work(&test_monkeyz[0], &main_queue, read_file);
-   printer_work(&test_monkeyz[2], &main_queue);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   reader_work(&test_monkeyz[0], &main_queue, read_file);
+   print_queue(main_queue);
+   printf("longueur %d \n", length_queue(stats_queue));
+   print_queue_light(main_queue);
    
 
 

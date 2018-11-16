@@ -23,6 +23,7 @@ void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIF
 int all_on_strike(struct monkey monkeyz[], int length);
 void work(struct monkey* monkeyz, struct queue* main_queue, struct queue* stats, FILE* filename); // Principal work function for the monkey
 struct monkey* random_select(struct monkey monkeyz[], int length);
+void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ); //the function used to make the final print of the program in the base version
 //
 //--------------------
 //  Reader Monkey

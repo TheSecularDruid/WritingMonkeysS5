@@ -51,6 +51,7 @@ void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIF
   }
 }
 
+
 int all_on_strike(struct monkey monkeyz[], int length)
 {
   for(int i = 0; i < length; i++){
@@ -89,8 +90,6 @@ struct monkey* random_select(struct monkey monkeyz[], int length, int random) {
   return &monkeyz[active_monkeyz[rand()%nb_actives]];
 }
 
-
-
 //
 //--------------------------
 // Reader Monkey
@@ -101,14 +100,13 @@ void read_a_word(char word[], FILE* filename)
 {
   int i = 0;
   int ch = 0;
-  while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch))) ){
+  while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch)) || (ch==39)) ){
     if(!isspace(ch) && !ispunct(ch)){
       word[i] = ch;
       i++;
     }
   }
   word[i] = 0;
-  //printf("read_a_word\n");
 }
 
 void to_lower_string(char* str)
@@ -147,9 +145,7 @@ int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* fi
 //--------
 //
 
-int statistician_work(struct monkey monkey, struct queue* stats, struct queue* main_queue) {
-   if (monkey.work != STATISTICIAN)
-      return 1;
+void statistician_work(struct monkey monkey, struct queue* stats, struct queue* main_queue) {
    struct cell* first_word = malloc(sizeof(struct cell));
    cell_cpy(read_queue(*main_queue),first_word);
    struct cell* cell_to_inc = research_in_queue(*stats, first_word->word);

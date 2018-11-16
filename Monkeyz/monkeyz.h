@@ -34,7 +34,7 @@ void read_a_word(char* word, FILE* filename); //Read a single word (of a maximum
 //
 //  Statistician Monkey
 //
-int statistician_work(struct monkey monkey, struct queue* stats, struct queue* main_queue);  //accomplish the work of a statistician monkey
+void statistician_work(struct monkey monkey, struct queue* stats, struct queue* main_queue);  //accomplish the work of a statistician monkey
 //
 //  Printer Monkey
 //

@@ -103,7 +103,17 @@ struct monkey* random_select(struct monkey monkeyz[], int length) {
    return &monkeyz[active_monkeyz[rand()%nb_actives]];
 }
 
-
+void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ) {
+   printf("Nombre de mots lus : %d \n", monkeyz[0].read_words);
+   printf("Nombre de mots imprimés : %d \n", monkeyz[2].printed_words);
+   printf("Nombre de mots différents : %d \n", length_queue(stats));
+   printf("Multiplicité la plus grande : %d \n", max_occ.first.was_read_by_statistician)
+   printf("atteinte par les mots : ");
+   print_queue_light(max_occ);
+   printf("Multiplicité la plus petite : %d \n", min_occ.first.was_read_by_statistician);
+   printf("atteinte par les mots : ");
+   print_queue_light(min_occ);
+}
 
 //
 //--------------------------
@@ -116,7 +126,7 @@ void read_a_word(char word[], FILE* filename)
   int i = 0;
   int ch = 0;
 
-  while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch))) ){
+  while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch)) || (ch==39)) ){
     if(!isspace(ch) && !ispunct(ch)){
       word[i] = ch;
       i++;

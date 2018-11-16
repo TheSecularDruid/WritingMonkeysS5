@@ -25,5 +25,6 @@ void purge_queue(struct queue* queue_to_purge); //Purge (delete all cells) the q
 struct cell* research_in_queue(struct queue source, char* word_to_search); //Search a cell in a queue, return NULL if the word of the cell isn't found, the adress to the cell otherwise
 void cell_cpy(struct cell* source, struct cell* dest); //Copy a cell
 void print_cell(struct cell cell_to_print); //Print a cell
-
+int length_queue(struct queue queue); //Returns the length of a queue given in argument
+void print_queue_light(struct queue queue);//Prints the words contained in the queue, separated by periods
 #endif

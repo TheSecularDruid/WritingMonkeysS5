@@ -54,8 +54,12 @@ int main(int argc, char* argv[])
   }
   struct queue main_queue;
   struct queue stats_queue;
+  struct queue words_of_max_occurency;
+  sturct queue words_of_min_occurency;
   init_queue(&main_queue);
   init_queue(&stats_queue);
+  init_queue(&words_of_max_occurency);
+  init_queue(&words_of_min_occurency);
   struct monkey monkeyz[3];
   init_monkeys(monkeyz, 3);
   //End-Init
@@ -67,11 +71,13 @@ int main(int argc, char* argv[])
     work(happy_selected_monkey, &main_queue, &stats_queue, read_file);
     filter_active_monkeys(monkeyz, 3, main_queue, read_file);
   }
-  print_monkeys(monkeyz,3);
+  total_print(monkeyz, stats_queue, words_of_max_occurency, words_of_min_occurency);
 
   //Purge
   purge_queue(&main_queue);
   purge_queue(&stats_queue);
+  purge_queue(&words_of_max_occurency);
+  purge_queue(&words_of_min_occurency);
   fclose(read_file);
   return EXIT_SUCCESS;
   //End-Purge

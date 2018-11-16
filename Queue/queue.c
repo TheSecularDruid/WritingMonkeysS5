@@ -15,7 +15,6 @@ void add_in_queue(struct cell* toAdd, struct queue* source)
   toAdd->was_read_by_statistician = 0;
 }
 
-
 void remove_in_queue(struct queue* source)
 {
   if(!is_queue_empty(*source)){
@@ -95,6 +94,34 @@ void print_cell(struct cell cell_to_print)
   printf("Word : %s\n",cell_to_print.word);
   printf("Was Read By Statistician : %d\n",cell_to_print.was_read_by_statistician);
   printf("Next : %p \n",cell_to_print.next);
+}
+
+int length_queue(struct queue queue) {
+   if (is_queue_empty(queue)) {
+      return 0;
+   }
+   else {
+      struct cell *ptr = queue.first;
+      int prompter = 0;
+      while (ptr != NULL) {
+	 prompter ++;
+	 ptr = ptr->next;
+      }
+      return prompter;
+   }
+}
+
+void print_queue_light(struct queue queue) {
+  if (!is_queue_empty(queue)){
+    struct cell* ptr = queue.first;
+    while(ptr != NULL){
+       printf("%s; ", ptr->word);
+       ptr = ptr->next;
+    }
+    printf("\n");
+  }
+  else
+    printf("The queue is empty \n");
 }
 
 //
