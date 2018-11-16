@@ -25,5 +25,10 @@ void purge_queue(struct queue* queue_to_purge); //Purge (delete all cells) the q
 struct cell* research_in_queue(struct queue source, char* word_to_search); //Search a cell in a queue, return NULL if the word of the cell isn't found, the adress to the cell otherwise
 void cell_cpy(struct cell* source, struct cell* dest); //Copy a cell
 void print_cell(struct cell cell_to_print); //Print a cell
+//--
+// Stats functions
+//--
+void greatest_occurency(struct queue source, struct queue* dest); //Return the maximum(s) Occurency(ies) (only usable in stats functions)
+void minimal_occurency(struct queue source, struct queue* dest); //Return the minimum(s) Occurency(ies) (only usable in stats functions)
 
 #endif

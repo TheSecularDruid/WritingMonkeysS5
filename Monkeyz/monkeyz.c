@@ -72,17 +72,21 @@ void work(struct monkey* monkey, struct queue* main_queue, struct queue* stats, 
   }
 }
 
-struct monkey* random_select(struct monkey monkeyz[], int length) {
-   int nb_actives = 0;
-   int active_monkeyz[length];
-   for (int i=0;i<length; i++) {
-      if (monkeyz[i].status==1) {
-	 active_monkeyz[nb_actives] = i;
-	 nb_actives += 1;
-      }
-   }
-   srand(time(NULL));
-   return &monkeyz[active_monkeyz[rand()%nb_actives]];
+struct monkey* random_select(struct monkey monkeyz[], int length, int random) {
+  int nb_actives = 0;
+  int active_monkeyz[length];
+  for (int i=0;i<length; i++) {
+    if (monkeyz[i].status==1) {
+      active_monkeyz[nb_actives] = i;
+      nb_actives += 1;
+    }
+  }
+  if(random == 0)
+    srand(time(NULL));
+  else
+    srand(random);
+
+  return &monkeyz[active_monkeyz[rand()%nb_actives]];
 }
 
 
@@ -130,8 +134,10 @@ int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* fi
 
   char word[MAX_WORD_LENGTH+1] = "";
   read_a_word(word,filename);
-  create_cell(word,main_queue);
-  reader_monkey->read_words = reader_monkey->read_words + 1;
+  if(strcmp(word,"") != 0){
+    create_cell(word,main_queue);
+    reader_monkey->read_words = reader_monkey->read_words + 1;
+  }
   return 0;
 }
 

@@ -15,6 +15,7 @@ void add_in_queue(struct cell* toAdd, struct queue* source)
   toAdd->was_read_by_statistician = 0;
 }
 
+
 void remove_in_queue(struct queue* source)
 {
   if(!is_queue_empty(*source)){
@@ -53,7 +54,7 @@ void print_queue(struct queue queue_to_print)
   if (!is_queue_empty(queue_to_print)){
     struct cell* ptr = queue_to_print.first;
     while(ptr != NULL){
-      printf("cell %d : %s ; was read by statistician : %d | next : %d\n",ptr,ptr->word,ptr->was_read_by_statistician,ptr->next);
+      printf("cell %p : %s ; was read by statistician : %d | next : %p\n",ptr,ptr->word,ptr->was_read_by_statistician,ptr->next);
       ptr = ptr->next;
     }
   }
@@ -90,8 +91,67 @@ void cell_cpy(struct cell* source, struct cell* dest)
 
 void print_cell(struct cell cell_to_print)
 {
-  printf("Cell at %p (%d) : \n",&cell_to_print,&cell_to_print);
+  printf("Cell at %p : \n",&cell_to_print);
   printf("Word : %s\n",cell_to_print.word);
   printf("Was Read By Statistician : %d\n",cell_to_print.was_read_by_statistician);
-  printf("Next : %p (%d)\n",cell_to_print.next,cell_to_print.next);
+  printf("Next : %p \n",cell_to_print.next);
+}
+
+//
+//----
+// Stats functions
+//----
+//
+
+void greatest_occurency(struct queue source, struct queue* dest)
+{
+  struct cell* ptr = source.first;
+  int max_occurency = 0;
+
+  while(ptr != NULL){
+    if(max_occurency < ptr->was_read_by_statistician){
+      max_occurency = ptr->was_read_by_statistician;
+      purge_queue(dest);
+      struct cell* cell_of_max = malloc(sizeof(struct cell));
+      cell_cpy(ptr,cell_of_max);
+      add_in_queue(cell_of_max,dest);
+      cell_of_max->was_read_by_statistician = ptr->was_read_by_statistician;
+    }
+    else{
+      if(max_occurency == ptr->was_read_by_statistician){
+        struct cell* cell_of_max = malloc(sizeof(struct cell));
+        cell_cpy(ptr,cell_of_max);
+        add_in_queue(cell_of_max,dest);
+        cell_of_max->was_read_by_statistician = ptr->was_read_by_statistician;
+      }
+    }
+    ptr = ptr->next;
+  }
+}
+
+void minimal_occurency(struct queue source, struct queue* dest)
+{
+  struct cell* ptr = source.first;
+  int min_occurency = ptr->was_read_by_statistician;
+
+  while(ptr != NULL){
+    printf("mdr %p",ptr);
+    if(min_occurency > ptr->was_read_by_statistician){
+      min_occurency = ptr->was_read_by_statistician;
+      purge_queue(dest);
+      struct cell* cell_of_min = malloc(sizeof(struct cell));
+      cell_cpy(ptr,cell_of_min);
+      add_in_queue(cell_of_min,dest);
+      cell_of_min->was_read_by_statistician = ptr->was_read_by_statistician;
+    }
+    else{
+      if(min_occurency == ptr->was_read_by_statistician){
+        struct cell* cell_of_min = malloc(sizeof(struct cell));
+        cell_cpy(ptr,cell_of_min);
+        add_in_queue(cell_of_min,dest);
+        cell_of_min->was_read_by_statistician = ptr->was_read_by_statistician;
+      }
+    }
+    ptr = ptr->next;
+  }
 }

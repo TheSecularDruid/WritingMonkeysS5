@@ -1,14 +1,22 @@
-main : queue.o monkeyz.o main.c
-	gcc queue.o monkeyz.o main.c -std=c99 -g -o project
+CFLAGS=-Wall -g3 -std=c99
 
-test : queue.o monkeyz.o test.c
-	gcc queue.o monkeyz.o test.c -std=c99 -g -o project
+main : queue.o monkeyz.o main.o
+	gcc queue.o monkeyz.o main.o $(CFLAGS) -o project
+
+test : queue.o monkeyz.o test.o
+	gcc queue.o monkeyz.o test.o $(CFLAGS) -o test
+
+main.o : main.c
+	gcc -o main.o -c main.c $(CFLAGS)
+
+test.o : test.c
+	gcc -o test.o -c test.c $(CFLAGS)
 
 queue.o : Queue/queue.h Queue/queue.c
-	gcc Queue/queue.c -c -std=c99 -g
+	gcc -o queue.o -c Queue/queue.c $(CFLAGS)
 
 monkeyz.o : Monkeyz/monkeyz.h Monkeyz/monkeyz.c
-	gcc Monkeyz/monkeyz.c -c -std=c99 -g
+	gcc -o monkeyz.o -c Monkeyz/monkeyz.c  $(CFLAGS)
 
 clean :
-	rm project queue.o monkeyz.o
+	rm project queue.o monkeyz.o main.o

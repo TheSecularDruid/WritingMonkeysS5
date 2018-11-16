@@ -30,15 +30,18 @@ void print_args(int argc, char* argv[])
 
 void print_usage()
 {
-  printf("Usage : ./project [-s] FILE\n");
+  printf("Usage : ./main [-s] FILE\n");
 }
 
 
 int main(int argc, char* argv[])
 {
-  //Init
+  //Initialization
+  //-------
+  // Reading arguments
+  //-------
   FILE* read_file = NULL;
-  int seed_rng;
+  int seed_rng = 0;
   if(argc != 2 && argc != 4){
     print_usage();
     return EXIT_SUCCESS;
@@ -58,20 +61,33 @@ int main(int argc, char* argv[])
   init_queue(&stats_queue);
   struct monkey monkeyz[3];
   init_monkeys(monkeyz, 3);
-  //End-Init
+  //End of Initialization
 
 
   filter_active_monkeys(monkeyz, 3, main_queue, read_file);
   while(!all_on_strike(monkeyz,3)){
-    struct monkey* happy_selected_monkey = random_select(monkeyz, 3);
+    struct monkey* happy_selected_monkey = random_select(monkeyz, 3, seed_rng);
     work(happy_selected_monkey, &main_queue, &stats_queue, read_file);
     filter_active_monkeys(monkeyz, 3, main_queue, read_file);
   }
-  print_monkeys(monkeyz,3);
+  printf("\nWords Read : %d\n",monkeyz[0].read_words);
+  struct queue max_occurency_queue;
+  struct queue min_occurency_queue;
+  init_queue(&max_occurency_queue);
+  init_queue(&min_occurency_queue);
+
+  greatest_occurency(stats_queue,&max_occurency_queue);
+  minimal_occurency(stats_queue,&min_occurency_queue);
+  printf("Maximum Occurency : \n");
+  print_queue(max_occurency_queue);
+  printf("Minimum Occurency : \n");
+  print_queue(min_occurency_queue);
 
   //Purge
   purge_queue(&main_queue);
   purge_queue(&stats_queue);
+  purge_queue(&min_occurency_queue);
+  purge_queue(&max_occurency_queue);
   fclose(read_file);
   return EXIT_SUCCESS;
   //End-Purge
