@@ -5,7 +5,7 @@
 
 struct cell{
   char word[MAX_WORD_LENGTH+1];
-  int was_read_by_statistician; //Boolean, one or zero
+  int was_read_by_statistician;
   struct cell* next;
 };
 
@@ -30,7 +30,7 @@ void print_queue_light(struct queue queue);//Prints the words contained in the q
 //--
 // Stats functions
 //--
-void greatest_occurency(struct queue source, struct queue* dest); //Return the maximum(s) Occurency(ies) (only usable in stats functions)
-void minimal_occurency(struct queue source, struct queue* dest); //Return the minimum(s) Occurency(ies) (only usable in stats functions)
+void greatest_occurency(struct queue source, struct queue* dest); //Put in the queue dest the maximum(s) Occurency(ies) (only usable with the stats queue)
+void minimal_occurency(struct queue source, struct queue* dest); //Put in the queue dest the minimum(s) Occurency(ies) (only usable with the stats queue)
 
 #endif
