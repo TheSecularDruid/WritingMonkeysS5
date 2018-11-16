@@ -104,10 +104,8 @@ void read_a_word(char word[], FILE* filename)
   int i = 0;
   int ch = 0;
   while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch)) || (ch==39)) ){
-    if(!isspace(ch) && !ispunct(ch)){
-      word[i] = ch;
-      i++;
-    }
+    word[i] = ch;
+    i++;
   }
   word[i] = 0;
 }

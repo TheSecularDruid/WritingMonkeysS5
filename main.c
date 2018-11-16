@@ -82,7 +82,10 @@ int main(int argc, char* argv[])
   filter_active_monkeys(monkeyz, 3, main_queue, read_file);
   while(!all_on_strike(monkeyz,3)){
     struct monkey* happy_selected_monkey = random_select(monkeyz, 3, seed_rng);
+    if(happy_selected_monkey->work == 0)
+      printf("Read words : %d\n",happy_selected_monkey->read_words);
     work(happy_selected_monkey, &main_queue, &stats_queue, read_file);
+
     filter_active_monkeys(monkeyz, 3, main_queue, read_file);
   }
   //---
