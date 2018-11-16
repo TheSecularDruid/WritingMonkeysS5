@@ -34,7 +34,7 @@ void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIF
     	    monkeyz[i].status = 1;
     	 }
     	 break;
-          case STATISTICIAN :
+       case STATISTICIAN :
     	 if (is_queue_empty(FIFO)||read_already( *(read_queue(FIFO)) ))
     	    monkeyz[i].status = 0;
     	 else {
@@ -66,10 +66,13 @@ void work(struct monkey* monkey, struct queue* main_queue, struct queue* stats, 
   switch (monkey->work) {
     case READER:
        reader_work(monkey, main_queue, filename);
+       break;
     case STATISTICIAN:
        statistician_work(*monkey,stats, main_queue);
+       break;
     case PRINTER:
        printer_work(monkey, main_queue);
+       break;
   }
 }
 
@@ -149,8 +152,9 @@ void statistician_work(struct monkey monkey, struct queue* stats, struct queue* 
    struct cell* first_word = malloc(sizeof(struct cell));
    cell_cpy(read_queue(*main_queue),first_word);
    struct cell* cell_to_inc = research_in_queue(*stats, first_word->word);
-   if (cell_to_inc != NULL)
+   if (cell_to_inc != NULL){ //if the word exist in the stats queue
       cell_to_inc->was_read_by_statistician += 1;
+    }
    else {
       add_in_queue (first_word, stats);
       stats->last->was_read_by_statistician += 1;
