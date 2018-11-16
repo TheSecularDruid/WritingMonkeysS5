@@ -132,10 +132,11 @@ void greatest_occurency(struct queue source, struct queue* dest)
 void minimal_occurency(struct queue source, struct queue* dest)
 {
   struct cell* ptr = source.first;
-  int min_occurency = ptr->was_read_by_statistician;
+  int min_occurency = 0;
+  if(ptr != NULL)
+    min_occurency = ptr->was_read_by_statistician;
 
   while(ptr != NULL){
-    printf("mdr %p",ptr);
     if(min_occurency > ptr->was_read_by_statistician){
       min_occurency = ptr->was_read_by_statistician;
       purge_queue(dest);
