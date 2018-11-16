@@ -79,7 +79,6 @@ int main(int argc, char* argv[])
   init_monkeys(monkeyz, 3);
   //End of Initialization
 
-
   filter_active_monkeys(monkeyz, 3, main_queue, read_file);
   while(!all_on_strike(monkeyz,3)){
     struct monkey* happy_selected_monkey = random_select(monkeyz, 3, seed_rng);
