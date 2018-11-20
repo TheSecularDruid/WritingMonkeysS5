@@ -19,5 +19,7 @@ void add_in_successors_queue(struct successors_cell* to_add, struct successors_q
 struct successors_cell* read_successors_queue(struct successors_queue source);
 void remove_in_successors_queue(struct successors_queue* source);
 struct successors_cell pop_successors_queue(struct successors_queue* source);
+//struct successors_cell* research_in_successors_queue(struct successors_queue source, char* word);
+
 
 #endif

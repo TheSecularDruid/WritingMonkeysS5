@@ -1,5 +1,8 @@
-#include <queue.h>
-#include <successors_queue.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include "queue.h"
+#include "successors_queue.h"
 
 void init_successors_queue(struct successors_queue* succ_queue){
     succ_queue->first = NULL;
@@ -10,14 +13,14 @@ int is_successors_queue_empty(struct successors_queue succ_queue){
     return(succ_queue.first == NULL);
 }
 
-void add_in_successors_queue(struct successors_cell* toAdd, struct successors_queue* source) {
+void add_in_successors_queue(struct successors_cell* to_add, struct successors_queue* source) {
     if(is_successors_queue_empty(*source))
-	source->first = toAdd;
+	source->first = to_add;
     else
-	source->last->next = toAdd;
-    source->last = toAdd;
-    toAdd->next = NULL;
-    toAdd->nb_of_occ = 0;
+	source->last->next = to_add;
+    source->last = to_add;
+    to_add->next = NULL;
+    to_add->nb_of_occ = 0;
 }
 
 struct successors_cell* read_successors_queue(struct successors_queue source) {
@@ -39,3 +42,11 @@ struct successors_cell pop_successors_queue(struct successors_queue* source) {
     remove_in_successors_queue(source);
     return(result);
 }
+
+/* struct successors_cell* research_in_successors_queue(struct successors_queue source, char* word) { */
+/*     struct successors_cell* ptr = source.first; */
+/*     while(strcmp(ptr->word,word)) { */
+	
+/*     } */
+    
+/* } */
