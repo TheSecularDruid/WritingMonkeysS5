@@ -43,10 +43,12 @@ struct successors_cell pop_successors_queue(struct successors_queue* source) {
     return(result);
 }
 
-/* struct successors_cell* research_in_successors_queue(struct successors_queue source, char* word) { */
-/*     struct successors_cell* ptr = source.first; */
-/*     while(strcmp(ptr->word,word)) { */
-	
-/*     } */
+struct successors_cell* research_in_successors_queue(struct successors_queue source, char word[]) {
+    struct successors_cell* ptr = source.first;
+    while(ptr!=NULL&&strcmp(ptr->word,word)) {
+	printf("%s | %p", ptr->word, ptr);
+  	ptr = ptr->next;
+    }
+    return(NULL);
     
-/* } */
+}
