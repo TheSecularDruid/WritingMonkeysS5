@@ -104,7 +104,7 @@ int main(int argc, char* argv[])
     // End of Main Algorithm
     //---
 
-    printf(" 38 \n");
+    printf("Read words : %d \n",monkeyz[0].read_words);
     //Purge
     purge_queue(&main_queue);
     purge_queue(&writer_queue);
