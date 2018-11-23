@@ -68,7 +68,7 @@ void purge_queue(struct queue* queue_to_purge)
   }
 }
 
-struct cell* research_in_queue(struct queue source, char* word_to_search)
+struct cell* research_word_in_queue(struct queue source, char* word_to_search)
 {
   struct cell* ptr = source.first;
   if(!is_queue_empty(source)){
@@ -88,40 +88,61 @@ void cell_cpy(struct cell* source, struct cell* dest)
   dest->next = source->next;
 }
 
-void print_cell(struct cell cell_to_print)
+void print_cell(struct cell* cell_to_print)
 {
-  printf("Cell at %p : \n",&cell_to_print);
-  printf("Word : %s\n",cell_to_print.word);
-  printf("Was Read By Statistician : %d\n",cell_to_print.was_read_by_statistician);
-  printf("Next : %p \n",cell_to_print.next);
+  printf("Cell at %p : \n",cell_to_print);
+  printf("Word : %s\n",cell_to_print->word);
+  printf("Was Read By Statistician : %d\n",cell_to_print->was_read_by_statistician);
+  printf("Next : %p \n",cell_to_print->next);
 }
 
-int length_queue(struct queue queue) {
-   if (is_queue_empty(queue)) {
-      return 0;
-   }
-   else {
-      struct cell *ptr = queue.first;
-      int prompter = 0;
-      while (ptr != NULL) {
-	 prompter ++;
-	 ptr = ptr->next;
-      }
-      return prompter;
-   }
+int length_queue(struct queue source)
+{
+    struct cell* ptr = source.first;
+    int i = 0;
+    while(ptr != NULL){
+        i++;
+        ptr = ptr->next;
+    }
+    return i;
 }
 
 void print_queue_light(struct queue queue) {
   if (!is_queue_empty(queue)){
     struct cell* ptr = queue.first;
     while(ptr != NULL){
-       printf("%s; ", ptr->word);
+       printf("%s (%d); ", ptr->word, ptr->was_read_by_statistician);
        ptr = ptr->next;
     }
     printf("\n");
   }
   else
     printf("The queue is empty \n");
+}
+
+struct cell* research_cell(struct queue* source, int position)
+{
+    struct cell* ptr = source->first;
+    int i  = 1;
+    while(ptr != NULL && i != position)
+    {
+        i++;
+        ptr = ptr->next;
+    }
+    return ptr;
+}
+
+//NEW TO TEST
+void queue_cpy(struct queue* source, struct queue* dest)
+{
+    struct cell* ptr = source->first;
+    while(ptr != NULL){
+        struct cell* buffer = malloc(sizeof(struct cell));
+        cell_cpy(ptr,buffer);
+        buffer->next = NULL;
+        add_in_queue(buffer,dest);
+        ptr = ptr->next;
+    }
 }
 
 //

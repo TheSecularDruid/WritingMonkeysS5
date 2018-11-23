@@ -22,4 +22,4 @@ successors_queue.o : Queue/successors_queue.c Queue/successors_queue.h
 	gcc -o successors_queue.o -c Queue/successors_queue.c $(CFLAGS)
 
 clean :
-	rm project queue.o monkeyz.o main.o
+	rm project queue.o monkeyz.o main.o successors_queue.o
