@@ -49,9 +49,9 @@ void print_successors_queue(struct successors_queue queue_to_print)
       struct successors_cell* ptr = queue_to_print.first;
       while(ptr != NULL){
         printf("cell %p : %s ; nb of occ : %d | next : %p\n",ptr,ptr->word,ptr->nb_of_occ,ptr->next);
-        printf("Successors of this word : ----------------------------------- \n");
+        printf("Successors of this word : ");
         print_queue_light(ptr->successors);
-        printf("End of successors --------------------------------------------\n");
+        printf("\n");
         ptr = ptr->next;
       }
     }
