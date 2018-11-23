@@ -26,4 +26,5 @@ int length_successors_queue(struct successors_queue stats_queue); //Return the l
 void successors_cell_cpy(struct successors_cell* source, struct successors_cell* dest); //Copy a successor cell properly
 void print_successors_queue(struct successors_queue queue_to_print); //Print the whole queue
 
+
 #endif

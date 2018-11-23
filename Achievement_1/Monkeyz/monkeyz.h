@@ -44,6 +44,7 @@ void statistician_work(struct monkey monkey, struct successors_queue* stats, str
 //  Printer Monkey
 //--------------------
 //
+int is_a_simple_punc_sign(char word[]); //check wether word is a standard word/a double ponctuation sign or a simple ponctuation sign
 int printer_work(struct monkey* monkey, struct queue* main_queue);  //execute the work of a printer monkey
 //
 //--------------------

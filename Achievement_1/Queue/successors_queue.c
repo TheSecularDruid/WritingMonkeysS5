@@ -113,4 +113,5 @@ void purge_successors_queue(struct successors_queue* to_purge)
         purge_queue(&(to_purge->first->successors));
         remove_in_successors_queue(to_purge);
     }
+
 }
