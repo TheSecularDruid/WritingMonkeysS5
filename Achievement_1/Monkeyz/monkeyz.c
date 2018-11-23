@@ -167,13 +167,20 @@ void statistician_work(struct monkey monkey, struct queue* stats, struct queue* 
 //-----------
 //
 
-int printer_work(struct monkey* monkey, struct queue* main_queue){
-   if (monkey->work != PRINTER)
-      return 1;
-   struct cell read_word = pop_queue(main_queue);
-   printf("%s ", read_word.word);
-   monkey->printed_words += 1;
-   return 0;
+int is_a_simple_punc_sign(char word[]) {
+    return( ! ( strcmp(word,",") && strcmp(word, ".") ) );
+}
+
+int printer_work(struct monkey* monkey, struct queue* writter_queue){
+    if (monkey->work != PRINTER)
+	return 1;
+    struct cell read_word = pop_queue(writter_queue);
+    if (is_a_simple_punc_sign(read_word.word))
+	printf("\b%s ", read_word.word);
+    else
+	printf("%s ", read_word.word);	  
+    monkey->printed_words += 1;
+    return 0;
 }
 
 
