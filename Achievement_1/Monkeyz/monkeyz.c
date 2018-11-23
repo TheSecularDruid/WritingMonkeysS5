@@ -113,7 +113,7 @@ void read_a_word(char word[], FILE* filename)
 {
     int i = 0;
     int ch = 0;
-    while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch)) || (ch==39)) ){
+    while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch)) || (ch==39)) || (ch==45) ){
         word[i] = ch;
         i++;
     }
@@ -202,7 +202,7 @@ int printer_work(struct monkey* monkey, struct queue* writter_queue){
     if (is_a_simple_punc_sign(read_word.word))
 	printf("\b%s ", read_word.word);
     else
-	printf("%s ", read_word.word);	  
+	printf("%s ", read_word.word);
     monkey->printed_words += 1;
     return 0;
 }
