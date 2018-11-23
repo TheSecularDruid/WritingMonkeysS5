@@ -3,6 +3,9 @@
 #include <string.h>
 #include "Queue/queue.h"
 #include "Monkeyz/monkeyz.h"
+#include <time.h>
+
+#define MAX_NUMBER_OF_ROUNDS 300
 
 
 int reading_arguments(int* seed_rng, FILE** read_file, int argc, char* argv[])
@@ -78,24 +81,35 @@ int main(int argc, char* argv[])
     init_monkeys(monkeyz, NUMBER_OF_MONKEYS);
     struct cell last_word_read;
     strcpy(last_word_read.word,"");
+    if(seed_rng == 0) //If no -s option has been declared
+        srand(time(NULL));
+    else
+        srand(seed_rng);
     //End of Initialization
 
     //---
     // Main Algorithm
     //---
-    filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue);
-    while(!is_all_on_strike(monkeyz,NUMBER_OF_MONKEYS)){
-      struct monkey* happy_selected_monkey = random_select(monkeyz, NUMBER_OF_MONKEYS, seed_rng);
-      work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read);
-      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue);
+    int i = 0;
+    filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue, writer_queue);
+    while(!is_all_on_strike(monkeyz,NUMBER_OF_MONKEYS) && i < MAX_NUMBER_OF_ROUNDS){
+        struct monkey* happy_selected_monkey = random_select(monkeyz, NUMBER_OF_MONKEYS, seed_rng);
+        if(happy_selected_monkey->work != WRITER || i > 100){
+          work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read);
+        }
+          filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue, writer_queue);
+      i++;
     }
     //---
     // End of Main Algorithm
     //---
-    printf("\n");
+    printf("\n\n");
     print_successors_queue(stats_queue);
+    printf("\nWriter Queue :\n");
+    print_queue(writer_queue);
     //Purge
     purge_queue(&main_queue);
+    purge_queue(&writer_queue);
     purge_successors_queue(&stats_queue);
     purge_queue(&words_of_max_occurency);
     purge_queue(&words_of_min_occurency);

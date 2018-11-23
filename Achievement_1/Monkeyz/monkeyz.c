@@ -27,7 +27,7 @@ int read_already(struct cell cell) {
 }
 
 //TO MODIFY
-void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue main_queue, FILE* filename, struct successors_queue stats){
+void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue main_queue, FILE* filename, struct successors_queue stats, struct queue writer_queue){
     for (int i=0;i<length;i=i+1) {
         switch(monkeyz[i].work) {
             case READER :
@@ -43,14 +43,16 @@ void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue mai
                    monkeyz[i].status = 1;
                 break;
             case PRINTER :
-                if (is_queue_empty(main_queue) || !read_already( *(read_queue(main_queue)) ))
+                if (is_queue_empty(writer_queue))
                    monkeyz[i].status = 0;
                 else
                    monkeyz[i].status = 1;
                 break;
             case WRITER :
-                //TODO
-                monkeyz[i].status = 0;
+                if(is_successors_queue_empty(stats))
+                    monkeyz[i].status = 0;
+                else
+                    monkeyz[i].status = 1;
                 break;
         }
     }
@@ -76,11 +78,10 @@ void work(struct monkey* monkey, struct queue* main_queue, struct successors_que
             statistician_work(*monkey,stats, main_queue, last_word_read);
             break;
         case PRINTER:
-            printer_work(monkey, main_queue);
+            printer_work(monkey, writer_queue);
             break;
         case WRITER:
-            //TO TEST
-            // writer_work(monkey,stats,writer_queue);
+            writer_work(monkey,stats,writer_queue);
             break;
     }
 }
@@ -94,11 +95,6 @@ struct monkey* random_select(struct monkey monkeyz[], int length, int random) {
           nb_actives += 1;
         }
     }
-
-    if(random == 0) //If no -s option has been declared
-        srand(time(NULL));
-    else
-        srand(random);
 
     return &monkeyz[active_monkeyz[rand()%nb_actives]];
 }
@@ -154,12 +150,10 @@ int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* fi
 //--------
 //
 
-//TO MODIFY
 void statistician_work(struct monkey monkey, struct successors_queue* stats, struct queue* main_queue, struct cell* last_word_read)
 {
    struct successors_cell* word_to_analyse = malloc(sizeof(struct successors_cell));
    strcpy(word_to_analyse->word,main_queue->first->word);
-
 
    struct successors_cell* researched_cell = research_word_in_successors_queue(*stats, word_to_analyse->word);
    if (researched_cell != NULL) //if the word exist in the stats queue
@@ -181,7 +175,7 @@ void statistician_work(struct monkey monkey, struct successors_queue* stats, str
    }
 
    strcpy(last_word_read->word,word_to_analyse->word);
-   main_queue->first->was_read_by_statistician = 1;
+   pop_queue(main_queue);
 }
 
 
@@ -196,13 +190,11 @@ int is_a_simple_punc_sign(char word[]) {
 }
 
 int printer_work(struct monkey* monkey, struct queue* writter_queue){
-    if (monkey->work != PRINTER)
-	return 1;
     struct cell read_word = pop_queue(writter_queue);
     if (is_a_simple_punc_sign(read_word.word))
-	printf("\b%s ", read_word.word);
+	   printf("\b%s ", read_word.word);
     else
-	printf("%s ", read_word.word);
+	   printf("%s ", read_word.word);
     monkey->printed_words += 1;
     return 0;
 }
@@ -217,7 +209,6 @@ int printer_work(struct monkey* monkey, struct queue* writter_queue){
 void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_queue, struct queue* writer_queue)
 {
     int length = length_successors_queue(*stats_queue);
-    srand(time(NULL));
     struct successors_cell* ptr = research_successors_cell(stats_queue,rand()%length);
     if(is_queue_empty(ptr->successors)){
          char* ponctuation[] = {",",";",".","!","?"};
@@ -225,10 +216,11 @@ void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_qu
          strcpy(buffer->word,ponctuation[rand()%5]);
          add_in_queue(buffer,writer_queue);
     } else{
-         struct cell* successor = research_cell(&(ptr->successors),rand()%length);
-         struct cell* buffer = malloc(sizeof(struct cell));
-         cell_cpy(successor,buffer);
-         add_in_queue(buffer,writer_queue);
+        int length_of_suc = length_queue(ptr->successors);
+        struct cell* successor = research_cell(&(ptr->successors),rand()%length_of_suc);
+        struct cell* buffer = malloc(sizeof(struct cell));
+        cell_cpy(successor,buffer);
+        add_in_queue(buffer,writer_queue);
      }
 }
 

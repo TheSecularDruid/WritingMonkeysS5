@@ -76,7 +76,7 @@ struct successors_cell* research_word_in_successors_queue(struct successors_queu
 struct successors_cell* research_successors_cell(struct successors_queue* source, int position)
 {
     struct successors_cell* ptr = source->first;
-    int i  = 1;
+    int i  = 0;
     while(ptr != NULL && i != position)
     {
         i++;

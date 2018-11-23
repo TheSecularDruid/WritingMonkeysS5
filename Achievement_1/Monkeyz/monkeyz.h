@@ -21,7 +21,7 @@ struct monkey {
 //
 void init_monkeys(struct monkey monkeyz[], int length);
 int read_already(struct cell);
-void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue main_queue, FILE* filename, struct successors_queue stats);
+void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue main_queue, FILE* filename, struct successors_queue stats, struct queue writer_queue);
 int is_all_on_strike(struct monkey monkeyz[], int length);
 void work(struct monkey* monkeyz, struct queue* main_queue, struct successors_queue* stats, FILE* filename, struct queue* writer_queue, struct cell* last_word_read); // Principal work function for the monkey
 struct monkey* random_select(struct monkey monkeyz[], int length, int random);
