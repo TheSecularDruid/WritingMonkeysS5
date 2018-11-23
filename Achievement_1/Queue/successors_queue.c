@@ -43,7 +43,6 @@ struct successors_cell pop_successors_queue(struct successors_queue* source) {
     remove_in_successors_queue(source);
     return(result);
 }
-
 void print_successors_queue(struct successors_queue queue_to_print)
 {
     if (!is_successors_queue_empty(queue_to_print)){

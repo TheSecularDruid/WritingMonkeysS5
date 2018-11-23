@@ -23,3 +23,6 @@ successors_queue.o : Queue/successors_queue.c Queue/successors_queue.h
 
 clean :
 	rm project queue.o monkeyz.o main.o successors_queue.o
+
+test_clean :
+	rm test queue.o monkeyz.o successors_queue.o test.o
