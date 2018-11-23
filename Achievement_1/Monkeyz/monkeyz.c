@@ -152,29 +152,30 @@ int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* fi
 
 void statistician_work(struct monkey monkey, struct successors_queue* stats, struct queue* main_queue, struct cell* last_word_read)
 {
-   struct successors_cell* word_to_analyse = malloc(sizeof(struct successors_cell));
-   strcpy(word_to_analyse->word,main_queue->first->word);
 
-   struct successors_cell* researched_cell = research_word_in_successors_queue(*stats, word_to_analyse->word);
+
+   struct successors_cell* researched_cell = research_word_in_successors_queue(*stats, main_queue->first->word);
    if (researched_cell != NULL) //if the word exist in the stats queue
-      researched_cell->nb_of_occ += 1;
+        researched_cell->nb_of_occ += 1;
    else {
-      add_in_successors_queue(word_to_analyse, stats);
-      word_to_analyse->nb_of_occ = 1;
+        struct successors_cell* word_to_analyse = malloc(sizeof(struct successors_cell));
+        strcpy(word_to_analyse->word,main_queue->first->word);
+        add_in_successors_queue(word_to_analyse, stats);
+        word_to_analyse->nb_of_occ = 1;
    }
 
    if(strcmp(last_word_read->word,"") != 0){ //Si on a lu un mot avant
        struct successors_cell* researched_ancestor = research_word_in_successors_queue(*stats, last_word_read->word);
-       struct cell* researched_suc_in_anc  = research_word_in_queue(researched_ancestor->successors, word_to_analyse->word);
+       struct cell* researched_suc_in_anc  = research_word_in_queue(researched_ancestor->successors, main_queue->first->word);
        if(researched_suc_in_anc != NULL) //The ancestor had this successor already
            researched_suc_in_anc->was_read_by_statistician++;
        else{
-           struct cell* created_cell = create_cell(word_to_analyse->word, &(researched_ancestor->successors));
+           struct cell* created_cell = create_cell(main_queue->first->word, &(researched_ancestor->successors));
            created_cell->was_read_by_statistician = 1;
        }
    }
 
-   strcpy(last_word_read->word,word_to_analyse->word);
+   strcpy(last_word_read->word,main_queue->first->word);
    pop_queue(main_queue);
 }
 

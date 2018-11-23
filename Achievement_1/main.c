@@ -103,10 +103,6 @@ int main(int argc, char* argv[])
     //---
     // End of Main Algorithm
     //---
-    printf("\n\n");
-    print_successors_queue(stats_queue);
-    printf("\nWriter Queue :\n");
-    print_queue(writer_queue);
     //Purge
     purge_queue(&main_queue);
     purge_queue(&writer_queue);
