@@ -1,5 +1,0 @@
-Test :
-writer_work (must be done at the end of the next session)
-queue_cpy
-successors_cell_cpy
-length_successors_queueresearch_successors_queue
