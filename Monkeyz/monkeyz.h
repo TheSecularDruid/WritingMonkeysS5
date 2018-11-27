@@ -32,17 +32,19 @@ struct monkey* random_select(struct monkey monkeyz[], int length, int random);
 int is_a_letter(char ch); //tests whether a given character is a letter or not
 int is_a_number(char ch); //tests whether a given character is a number or not
 int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* filename); //Does the work of a reader monkey
-void create_cell(char* word, struct queue* main_queue); //Create a cell, put a word in and add it to the queue
 void read_a_word(char* word, FILE* filename); //Read a single word (of a maximum length of MAX_WORD_LENGTH) from filename
 //
+//--------------------
 //  Statistician Monkey
+//--------------------
 //
-void statistician_work(struct monkey monkey, struct queue* stats, struct queue* main_queue);  //accomplish the work of a statistician monkey
+void statistician_work(struct queue* stats, struct queue* main_queue);  //accomplish the work of a statistician monkey
 //
+//------------------
 //  Printer Monkey
+//------------------
 //
 int printer_work(struct monkey* monkey, struct queue* main_queue);  //execute the work of a printer monkey
-
 //
 //-----------------------
 //  Debbugging functions
