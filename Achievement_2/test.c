@@ -3,9 +3,6 @@
 #include <string.h>
 #include "Queue/queue.h"
 #include "Monkeyz/monkeyz.h"
-#include <time.h>
-
-#define MAX_NUMBER_OF_ROUNDS 300
 
 
 int reading_arguments(int* seed_rng, FILE** read_file, int argc, char* argv[])
@@ -36,19 +33,6 @@ void print_usage()
     printf("Usage : ./main [-s] FILE\n");
 }
 
-
-void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ) {
-    printf("Nombre de mots lus : %d \n", monkeyz[0].read_words);
-    printf("Nombre de mots imprimés : %d \n", monkeyz[2].printed_words);
-    printf("Nombre de mots différents : %d \n", length_queue(stats));
-    printf("Multiplicité la plus grande : %d \n", max_occ.first->was_read_by_statistician);
-    printf("atteinte par les mots : ");
-    print_queue_light(max_occ);
-    printf("Multiplicité la plus petite : %d \n", min_occ.first->was_read_by_statistician);
-    printf("atteinte par les mots : ");
-    print_queue_light(min_occ);
-}
-
 int main(int argc, char* argv[])
 {
     //Initialization
@@ -70,45 +54,25 @@ int main(int argc, char* argv[])
     struct queue main_queue;
     struct successors_queue stats_queue;
     struct queue writer_queue;
-    struct queue words_of_max_occurency;
-    struct queue words_of_min_occurency;
     init_queue(&main_queue);
     init_queue(&writer_queue);
     init_successors_queue(&stats_queue);
-    init_queue(&words_of_max_occurency);
-    init_queue(&words_of_min_occurency);
     struct monkey monkeyz[NUMBER_OF_MONKEYS]; //Number of Monkeys is defined in monkeyz.h
     init_monkeys(monkeyz, NUMBER_OF_MONKEYS);
-    struct cell last_word_read;
-    strcpy(last_word_read.word,"");
-    if(seed_rng == 0) //If no -s option has been declared
-        srand(time(NULL));
-    else
-        srand(seed_rng);
     //End of Initialization
 
     //---
     // Main Algorithm
     //---
-    int i = 0;
-    filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue, writer_queue);
-    while(!is_all_on_strike(monkeyz,NUMBER_OF_MONKEYS) && i < MAX_NUMBER_OF_ROUNDS){
-        struct monkey* happy_selected_monkey = random_select(monkeyz, NUMBER_OF_MONKEYS, seed_rng);
-        if(happy_selected_monkey->work != WRITER || i > 100){
-          work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read);
-        }
-      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue, writer_queue);
-      i++;
-    }
+    
     //---
     // End of Main Algorithm
     //---
 
-    printf("\nRead words : %d \n",monkeyz[0].read_words);
+
     //Purge
     purge_queue(&main_queue);
-    purge_queue(&writer_queue);
-    purge_successors_queue(&stats_queue);
+    purge_queue(&stats_queue);
     purge_queue(&words_of_max_occurency);
     purge_queue(&words_of_min_occurency);
     fclose(read_file);

@@ -37,13 +37,13 @@ void print_usage()
 void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ) {
    printf("Nombre de mots lus : %d \n", monkeyz[0].read_words);
    printf("Nombre de mots imprimés : %d \n", monkeyz[2].printed_words);
-   printf("Nombre de mots différents : %d \n", length_queue(stats));
+   printf("Nombre de mots différents : %d \n", length_queue(&stats));
    printf("Multiplicité la plus grande : %d \n", max_occ.first->was_read_by_statistician);
    printf("atteinte par les mots : ");
-   print_queue_light(max_occ);
+   print_queue_light(&max_occ);
    printf("Multiplicité la plus petite : %d \n", min_occ.first->was_read_by_statistician);
    printf("atteinte par les mots : ");
-   print_queue_light(min_occ);
+   print_queue_light(&min_occ);
 }
 
 int main(int argc, char* argv[])
@@ -96,12 +96,12 @@ int main(int argc, char* argv[])
   init_queue(&max_occurency_queue);
   init_queue(&min_occurency_queue);
 
-  greatest_occurency(stats_queue,&max_occurency_queue);
-  minimal_occurency(stats_queue,&min_occurency_queue);
+  greatest_occurency(&stats_queue,&max_occurency_queue);
+  minimal_occurency(&stats_queue,&min_occurency_queue);
   printf("Maximum Occurency : \n");
-  print_queue(max_occurency_queue);
+  print_queue(&max_occurency_queue);
   printf("Minimum Occurency : \n");
-  print_queue(min_occurency_queue);
+  print_queue(&min_occurency_queue);
   //End Printing the result
 
   //Purge

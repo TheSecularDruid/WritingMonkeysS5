@@ -1,5 +1,8 @@
 CFLAGS=-Wall -g3 -std=c99
 
+main_base : queue.o monkeyz.o main.o
+	gcc queue.o monkeyz.o main.o $(CFLAGS) -o project
+
 main : Achievement_1/queue.o Achievement_1/monkeyz.o Achievement_1/main.o Achievement_1/successors_queue.o
 	gcc Achievement_1/queue.o Achievement_1/monkeyz.o Achievement_1/main.o Achievement_1/successors_queue.o $(CFLAGS) -o project
 
@@ -14,9 +17,6 @@ Achievement_1/successors_queue.o : Achievement_1/Queue/successors_queue.c Achiev
 
 Achievement_1/main.o : Achievement_1/main.c
 	gcc -o Achievement_1/main.o -c Achievement_1/main.c $(CFLAGS)
-
-main_base : queue.o monkeyz.o main.o
-	gcc queue.o monkeyz.o main.o $(CFLAGS) -o project
 
 test : queue.o monkeyz.o test.o
 	gcc queue.o monkeyz.o test.o $(CFLAGS) -o test
