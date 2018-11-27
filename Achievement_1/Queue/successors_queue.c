@@ -22,6 +22,7 @@ void add_in_successors_queue(struct successors_cell* to_add, struct successors_q
     source->last = to_add;
     to_add->next = NULL;
     to_add->nb_of_occ = 0;
+    init_queue(&(to_add->successors));
 }
 
 struct successors_cell* read_successors_queue(struct successors_queue source) {
@@ -30,12 +31,12 @@ struct successors_cell* read_successors_queue(struct successors_queue source) {
 
 void remove_in_successors_queue(struct successors_queue* source) {
     if(!is_successors_queue_empty(*source)){
-	struct successors_cell* c = source->first->next;
-	free(source->first);
-	source->first = c;
+    	struct successors_cell* c = source->first->next;
+    	free(source->first);
+    	source->first = c;
     }
     if(is_successors_queue_empty(*source))
-	source->last = NULL;
+	   source->last = NULL;
 }
 
 struct successors_cell pop_successors_queue(struct successors_queue* source) {
@@ -76,7 +77,7 @@ struct successors_cell* research_word_in_successors_queue(struct successors_queu
 struct successors_cell* research_successors_cell(struct successors_queue* source, int position)
 {
     struct successors_cell* ptr = source->first;
-    int i  = 1;
+    int i  = 0;
     while(ptr != NULL && i != position)
     {
         i++;

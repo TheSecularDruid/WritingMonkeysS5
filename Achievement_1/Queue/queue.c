@@ -123,7 +123,7 @@ void print_queue_light(struct queue queue) {
 struct cell* research_cell(struct queue* source, int position)
 {
     struct cell* ptr = source->first;
-    int i  = 1;
+    int i  = 0;
     while(ptr != NULL && i != position)
     {
         i++;
