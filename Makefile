@@ -13,7 +13,7 @@ successors_queue.o : $(ACTUAL_GOAL)/Queue/successors_queue.c $(ACTUAL_GOAL)/Queu
 	gcc -o $(ACTUAL_GOAL)/successors_queue.o -c $(ACTUAL_GOAL)/Queue/successors_queue.c $(CFLAGS)
 
 test : queue.o monkeyz.o test.o
-	gcc base/queue.o base/monkeyz.o base/test.o $(CFLAGS) -o test
+	gcc $(ACTUAL_GOAL)/queue.o $(ACTUAL_GOAL)/monkeyz.o $(ACTUAL_GOAL)/test.o $(CFLAGS) -o test
 
 main.o : $(ACTUAL_GOAL)/main.c
 	gcc -o $(ACTUAL_GOAL)/main.o -c $(ACTUAL_GOAL)/main.c $(CFLAGS)
