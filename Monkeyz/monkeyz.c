@@ -36,14 +36,14 @@ void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIF
 	    }
 	    break;
 	case STATISTICIAN :
-	    if (is_queue_empty(FIFO)||read_already( *(read_queue(FIFO)) ))
+	    if (is_queue_empty(&FIFO)||read_already( *(read_queue(&FIFO)) ))
 		monkeyz[i].status = 0;
 	    else {
 		monkeyz[i].status = 1;
 	    }
 	    break;
 	case PRINTER :
-	    if (is_queue_empty(FIFO)||!read_already( *(read_queue(FIFO)) ))
+	    if (is_queue_empty(&FIFO)||!read_already( *(read_queue(&FIFO)) ))
 		monkeyz[i].status = 0;
 	    else {
 		monkeyz[i].status = 1;
@@ -90,7 +90,7 @@ struct monkey* random_select(struct monkey monkeyz[], int length, int random) {
 	srand(time(NULL));
     else
 	srand(random);
-    
+
     return &monkeyz[active_monkeyz[rand()%nb_actives]];
 }
 
@@ -114,7 +114,7 @@ void read_a_word(char word[], FILE* filename)
     while( ((ch = fgetc(filename)) != EOF)   //we're in word while the end of file is not reached
 	   && ( is_a_letter(ch) || is_a_number(ch) || ch==45 || ch==39 ) //and the character read is either a letter or a hyphen (ch==45) or an apostrophe (ch==39)
 	   && (i < MAX_WORD_LENGTH) ) //and the word isn't longer than supposed possible
-	
+
 	{
 	    word[i] = ch;
 	    i++;
@@ -142,7 +142,7 @@ int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* fi
 {
    if(reader_monkey->work != READER)
        return 1;
-   
+
    char word[MAX_WORD_LENGTH+1] = "";
    read_a_word(word,filename);
    if(strcmp(word,"") != 0){
@@ -160,8 +160,8 @@ int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* fi
 
 void statistician_work(struct monkey monkey, struct queue* stats, struct queue* main_queue) {
     struct cell* first_word = malloc(sizeof(struct cell));
-    cell_cpy(read_queue(*main_queue),first_word);
-    struct cell* cell_to_inc = research_in_queue(*stats, first_word->word);
+    cell_cpy(read_queue(main_queue),first_word);
+    struct cell* cell_to_inc = research_in_queue(stats, first_word->word);
     if (cell_to_inc != NULL){ //if the word exist in the stats queue
 	cell_to_inc->was_read_by_statistician += 1;
     }

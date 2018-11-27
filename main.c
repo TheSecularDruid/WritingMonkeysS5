@@ -80,7 +80,7 @@ int main(int argc, char* argv[])
   // Main Algorithm
   //---
   filter_active_monkeys(monkeyz, 3, main_queue, read_file);
-  while(!all_on_strike(monkeyz,3)){
+  while(!all_on_strike(monkeyz)){
     struct monkey* happy_selected_monkey = random_select(monkeyz, 3, seed_rng);
     work(happy_selected_monkey, &main_queue, &stats_queue, read_file);
     filter_active_monkeys(monkeyz, 3, main_queue, read_file);
