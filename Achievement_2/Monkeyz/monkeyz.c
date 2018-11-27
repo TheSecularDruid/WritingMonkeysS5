@@ -27,7 +27,7 @@ int read_already(struct cell cell) {
 }
 
 //TO MODIFY
-void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue main_queue, FILE* filename, struct successors_queue stats, struct queue writer_queue){
+void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue* main_queue, FILE* filename, struct successors_queue stats, struct queue* writer_queue){
     for (int i=0;i<length;i=i+1) {
         switch(monkeyz[i].work) {
             case READER :
@@ -104,44 +104,49 @@ struct monkey* random_select(struct monkey monkeyz[], int length, int random) {
 // Reader Monkey
 //--------------------------
 //
+int is_a_letter(char ch) {
+    return ( (ch > 64 && ch < 91)||( ch > 96 && ch < 123) );
+}
+
+int is_a_number(char ch) {
+    return ( ch > 47 && ch < 58 );
+}
 
 void read_a_word(char word[], FILE* filename)
 {
     int i = 0;
     int ch = 0;
-    while( ((ch = fgetc(filename)) != EOF) && ((strcmp(word, "") == 0) || (!isspace(ch) && !ispunct(ch)) || (ch==39)) || (ch==45) ){
-        word[i] = ch;
-        i++;
-    }
+    while( ((ch = fgetc(filename)) != EOF)   //we're in word while the end of file is not reached
+	   && ( is_a_letter(ch) || is_a_number(ch) || ch==45 || ch==39 ) //and the character read is either a letter or a hyphen (ch==45) or an apostrophe (ch==39)
+	   && (i < MAX_WORD_LENGTH) ) //and the word isn't longer than supposed possible
+
+	{
+	    word[i] = ch;
+	    i++;
+	}
     word[i] = 0;
 }
 
 void to_lower_string(char* str)
 {
-  while(*str) {
-     *str = tolower(*str);
-     str++;
-  }
-}
-
-struct cell* create_cell(char* word, struct queue* main_queue)
-{
-  struct cell* cell_to_add = malloc(sizeof(struct cell));
-  to_lower_string(word);
-  strcpy(cell_to_add->word,word);
-  add_in_queue(cell_to_add,main_queue);
-  return cell_to_add;
+    while(*str) {
+    	*str = tolower(*str);
+    	str++;
+    }
 }
 
 int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* filename)
 {
-  char word[MAX_WORD_LENGTH+1] = "";
-  read_a_word(word,filename);
-  if(strcmp(word,"") != 0){ //Si on a lu quelque chose
-    create_cell(word,main_queue);
-    reader_monkey->read_words = reader_monkey->read_words + 1;
-  }
-  return 0;
+    char word[MAX_WORD_LENGTH+1] = "";
+    read_a_word(word,filename);
+    if(strcmp(word,"") != 0){
+        struct cell* cell_to_add = malloc(sizeof(struct cell));
+        to_lower_string(word);
+        strcpy(cell_to_add->word,word);
+        add_in_queue(cell_to_add,main_queue);
+        reader_monkey->read_words = reader_monkey->read_words + 1;
+    }
+    return 0;
 }
 
 //
@@ -166,12 +171,14 @@ void statistician_work(struct monkey monkey, struct successors_queue* stats, str
 
    if(strcmp(last_word_read->word,"") != 0){ //Si on a lu un mot avant
        struct successors_cell* researched_ancestor = research_word_in_successors_queue(*stats, last_word_read->word);
-       struct cell* researched_suc_in_anc  = research_word_in_queue(researched_ancestor->successors, main_queue->first->word);
+       struct cell* researched_suc_in_anc  = research_in_queue(&(researched_ancestor->successors), main_queue->first->word);
        if(researched_suc_in_anc != NULL) //The ancestor had this successor already
            researched_suc_in_anc->was_read_by_statistician++;
        else{
-           struct cell* created_cell = create_cell(main_queue->first->word, &(researched_ancestor->successors));
-           created_cell->was_read_by_statistician = 1;
+           struct cell* cell_to_add = malloc(sizeof(struct cell));
+           strcpy(cell_to_add->word,main_queue->first->word);
+           add_in_queue(cell_to_add,&(researched_ancestor->successors));
+           cell_to_add->was_read_by_statistician = 1;
        }
    }
 
@@ -206,18 +213,17 @@ int printer_work(struct monkey* monkey, struct queue* writter_queue){
 //--------
 //
 
-//NEW TO TEST
 void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_queue, struct queue* writer_queue)
 {
     int length = length_successors_queue(*stats_queue);
     struct successors_cell* ptr = research_successors_cell(stats_queue,rand()%length);
-    if(is_queue_empty(ptr->successors)){
+    if(is_queue_empty(&(ptr->successors))){
          char* ponctuation[] = {",",";",".","!","?"};
          struct cell* buffer = malloc(sizeof(struct successors_cell));
          strcpy(buffer->word,ponctuation[rand()%5]);
          add_in_queue(buffer,writer_queue);
     } else{
-        int length_of_suc = length_queue(ptr->successors);
+        int length_of_suc = length_queue(&(ptr->successors));
         struct cell* successor = research_cell(&(ptr->successors),rand()%length_of_suc);
         struct cell* buffer = malloc(sizeof(struct cell));
         cell_cpy(successor,buffer);

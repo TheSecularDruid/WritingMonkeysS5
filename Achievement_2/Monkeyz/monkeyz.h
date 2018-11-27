@@ -4,9 +4,7 @@
 #include "../Queue/queue.h"
 #include "../Queue/successors_queue.h"
 
-#define NUMBER_OF_MONKEYS 4
-
-enum WORK_S { READER, STATISTICIAN, PRINTER, WRITER };
+enum WORK_S { READER, STATISTICIAN, PRINTER, WRITER, NUMBER_OF_MONKEYS };
 
 struct monkey {
    int status ;         //boolean, equals 0 if on strike, 1 if active
@@ -21,7 +19,7 @@ struct monkey {
 //
 void init_monkeys(struct monkey monkeyz[], int length);
 int read_already(struct cell);
-void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue main_queue, FILE* filename, struct successors_queue stats, struct queue writer_queue);
+void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue* main_queue, FILE* filename, struct successors_queue stats, struct queue* writer_queue);
 int is_all_on_strike(struct monkey monkeyz[], int length);
 void work(struct monkey* monkeyz, struct queue* main_queue, struct successors_queue* stats, FILE* filename, struct queue* writer_queue, struct cell* last_word_read); // Principal work function for the monkey
 struct monkey* random_select(struct monkey monkeyz[], int length, int random);
@@ -31,8 +29,9 @@ struct monkey* random_select(struct monkey monkeyz[], int length, int random);
 //--------------------
 //
 int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* filename); //Does the work of a reader monkey
-struct cell* create_cell(char* word, struct queue* main_queue); //Create a cell, put a word in and add it to the queue. Return the address of the queue newly created.
 void read_a_word(char* word, FILE* filename); //Read a single word (of a maximum length of MAX_WORD_LENGTH) from filename
+int is_a_letter(char ch); //tests whether a given character is a letter or not
+int is_a_number(char ch); //tests whether a given character is a number or not
 //
 //--------------------
 //  Statistician monkey
