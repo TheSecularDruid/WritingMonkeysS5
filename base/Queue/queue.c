@@ -97,7 +97,7 @@ void print_cell(struct cell* cell_to_print)
     printf("Next : %p \n",cell_to_print->next);
 }
 
-int length_queue(struct queue* queue)
+int length_queue(struct queue* source)
 {
     struct cell* ptr = source->first;
     int prompter = 0;
