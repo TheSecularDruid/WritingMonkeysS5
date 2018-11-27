@@ -1,5 +1,5 @@
 CFLAGS=-Wall -g3 -std=c99
-ACTUAL_GOAL=Achievement_1
+CURRENT_GOAL=Achievement_1
 
 
 
@@ -9,26 +9,26 @@ main_A1 : queue.o monkeyz.o main.o successors_queue.o
 main_base : queue.o monkeyz.o main.o
 	gcc base/queue.o base/monkeyz.o base/main.o $(CFLAGS) -o project
 
-successors_queue.o : $(ACTUAL_GOAL)/Queue/successors_queue.c $(ACTUAL_GOAL)/Queue/successors_queue.h
-	gcc -o $(ACTUAL_GOAL)/successors_queue.o -c $(ACTUAL_GOAL)/Queue/successors_queue.c $(CFLAGS)
+successors_queue.o : $(CURRENT_GOAL)/Queue/successors_queue.c $(CURRENT_GOAL)/Queue/successors_queue.h
+	gcc -o $(CURRENT_GOAL)/successors_queue.o -c $(CURRENT_GOAL)/Queue/successors_queue.c $(CFLAGS)
 
 test : queue.o monkeyz.o test.o
-	gcc $(ACTUAL_GOAL)/queue.o $(ACTUAL_GOAL)/monkeyz.o $(ACTUAL_GOAL)/test.o $(CFLAGS) -o test
+	gcc $(CURRENT_GOAL)/queue.o $(CURRENT_GOAL)/monkeyz.o $(CURRENT_GOAL)/test.o $(CFLAGS) -o test
 
-main.o : $(ACTUAL_GOAL)/main.c
-	gcc -o $(ACTUAL_GOAL)/main.o -c $(ACTUAL_GOAL)/main.c $(CFLAGS)
+main.o : $(CURRENT_GOAL)/main.c
+	gcc -o $(CURRENT_GOAL)/main.o -c $(CURRENT_GOAL)/main.c $(CFLAGS)
 
-test.o : $(ACTUAL_GOAL)/test.c
-	gcc -o $(ACTUAL_GOAL)/test.o -c $(ACTUAL_GOAL)/test.c $(CFLAGS)
+test.o : $(CURRENT_GOAL)/test.c
+	gcc -o $(CURRENT_GOAL)/test.o -c $(CURRENT_GOAL)/test.c $(CFLAGS)
 
-queue.o : $(ACTUAL_GOAL)/Queue/queue.h $(ACTUAL_GOAL)/Queue/queue.c
-	gcc -o $(ACTUAL_GOAL)/queue.o -c $(ACTUAL_GOAL)/Queue/queue.c $(CFLAGS)
+queue.o : $(CURRENT_GOAL)/Queue/queue.h $(CURRENT_GOAL)/Queue/queue.c
+	gcc -o $(CURRENT_GOAL)/queue.o -c $(CURRENT_GOAL)/Queue/queue.c $(CFLAGS)
 
-monkeyz.o : $(ACTUAL_GOAL)/Monkeyz/monkeyz.h $(ACTUAL_GOAL)/Monkeyz/monkeyz.c
-	gcc -o $(ACTUAL_GOAL)/monkeyz.o -c $(ACTUAL_GOAL)/Monkeyz/monkeyz.c  $(CFLAGS)
+monkeyz.o : $(CURRENT_GOAL)/Monkeyz/monkeyz.h $(CURRENT_GOAL)/Monkeyz/monkeyz.c
+	gcc -o $(CURRENT_GOAL)/monkeyz.o -c $(CURRENT_GOAL)/Monkeyz/monkeyz.c  $(CFLAGS)
 
 clean_Ach :
-	rm project $(ACTUAL_GOAL)/successors_queue.o $(ACTUAL_GOAL)/queue.o $(ACTUAL_GOAL)/monkeyz.o $(ACTUAL_GOAL)/main.o
+	rm project $(CURRENT_GOAL)/successors_queue.o $(CURRENT_GOAL)/queue.o $(CURRENT_GOAL)/monkeyz.o $(CURRENT_GOAL)/main.o
 
 clean :
 	rm project queue.o monkeyz.o main.o
