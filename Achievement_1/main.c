@@ -97,14 +97,14 @@ int main(int argc, char* argv[])
         if(happy_selected_monkey->work != WRITER || i > 100){
           work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read);
         }
-          filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue, writer_queue);
+      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue, writer_queue);
       i++;
     }
     //---
     // End of Main Algorithm
     //---
 
-    printf("Read words : %d \n",monkeyz[0].read_words);
+    printf("\nRead words : %d \n",monkeyz[0].read_words);
     //Purge
     purge_queue(&main_queue);
     purge_queue(&writer_queue);
