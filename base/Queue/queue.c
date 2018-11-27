@@ -99,13 +99,10 @@ void print_cell(struct cell* cell_to_print)
 
 int length_queue(struct queue* queue)
 {
-    if (is_queue_empty(queue))
-        return 0;
-
-    struct cell* ptr = queue->first;
+    struct cell* ptr = source->first;
     int prompter = 0;
-    while (ptr != NULL) {
-        prompter ++;
+    while(ptr != NULL){
+        prompter++;
         ptr = ptr->next;
     }
     return prompter;

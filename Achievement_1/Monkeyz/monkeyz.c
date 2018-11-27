@@ -27,7 +27,7 @@ int read_already(struct cell cell) {
 }
 
 //TO MODIFY
-void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue main_queue, FILE* filename, struct successors_queue stats, struct queue writer_queue){
+void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue* main_queue, FILE* filename, struct successors_queue stats, struct queue* writer_queue){
     for (int i=0;i<length;i=i+1) {
         switch(monkeyz[i].work) {
             case READER :
@@ -166,7 +166,7 @@ void statistician_work(struct monkey monkey, struct successors_queue* stats, str
 
    if(strcmp(last_word_read->word,"") != 0){ //Si on a lu un mot avant
        struct successors_cell* researched_ancestor = research_word_in_successors_queue(*stats, last_word_read->word);
-       struct cell* researched_suc_in_anc  = research_word_in_queue(researched_ancestor->successors, main_queue->first->word);
+       struct cell* researched_suc_in_anc  = research_in_queue(&(researched_ancestor->successors), main_queue->first->word);
        if(researched_suc_in_anc != NULL) //The ancestor had this successor already
            researched_suc_in_anc->was_read_by_statistician++;
        else{
@@ -211,13 +211,13 @@ void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_qu
 {
     int length = length_successors_queue(*stats_queue);
     struct successors_cell* ptr = research_successors_cell(stats_queue,rand()%length);
-    if(is_queue_empty(ptr->successors)){
+    if(is_queue_empty(&(ptr->successors))){
          char* ponctuation[] = {",",";",".","!","?"};
          struct cell* buffer = malloc(sizeof(struct successors_cell));
          strcpy(buffer->word,ponctuation[rand()%5]);
          add_in_queue(buffer,writer_queue);
     } else{
-        int length_of_suc = length_queue(ptr->successors);
+        int length_of_suc = length_queue(&(ptr->successors));
         struct cell* successor = research_cell(&(ptr->successors),rand()%length_of_suc);
         struct cell* buffer = malloc(sizeof(struct cell));
         cell_cpy(successor,buffer);

@@ -37,17 +37,17 @@ void print_usage()
 }
 
 
-void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ) {
-    printf("Nombre de mots lus : %d \n", monkeyz[0].read_words);
-    printf("Nombre de mots imprimés : %d \n", monkeyz[2].printed_words);
-    printf("Nombre de mots différents : %d \n", length_queue(stats));
-    printf("Multiplicité la plus grande : %d \n", max_occ.first->was_read_by_statistician);
-    printf("atteinte par les mots : ");
-    print_queue_light(max_occ);
-    printf("Multiplicité la plus petite : %d \n", min_occ.first->was_read_by_statistician);
-    printf("atteinte par les mots : ");
-    print_queue_light(min_occ);
-}
+// void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ) {
+//     printf("Nombre de mots lus : %d \n", monkeyz[0].read_words);
+//     printf("Nombre de mots imprimés : %d \n", monkeyz[2].printed_words);
+//     printf("Nombre de mots différents : %d \n", length_queue(stats));
+//     printf("Multiplicité la plus grande : %d \n", max_occ.first->was_read_by_statistician);
+//     printf("atteinte par les mots : ");
+//     print_queue_light(max_occ);
+//     printf("Multiplicité la plus petite : %d \n", min_occ.first->was_read_by_statistician);
+//     printf("atteinte par les mots : ");
+//     print_queue_light(min_occ);
+// }
 
 int main(int argc, char* argv[])
 {
@@ -55,8 +55,8 @@ int main(int argc, char* argv[])
     FILE* read_file = NULL;
     int seed_rng = 0;
     if(argc != 2 && argc != 4){
-    print_usage();
-    return EXIT_SUCCESS;
+        print_usage();
+        return EXIT_SUCCESS;
     }
     int error_code = reading_arguments(&seed_rng, &read_file, argc, argv);
     if(error_code == 1){
@@ -65,6 +65,7 @@ int main(int argc, char* argv[])
     }
     if(read_file == NULL){
         printf("Nom de fichier incorrect ou manquant\n");
+        printf("YO\n");
         return 1;
     }
     struct queue main_queue;
@@ -91,13 +92,13 @@ int main(int argc, char* argv[])
     // Main Algorithm
     //---
     int i = 0;
-    filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue, writer_queue);
+    filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, &main_queue, read_file, stats_queue, &writer_queue);
     while(!is_all_on_strike(monkeyz,NUMBER_OF_MONKEYS) && i < MAX_NUMBER_OF_ROUNDS){
         struct monkey* happy_selected_monkey = random_select(monkeyz, NUMBER_OF_MONKEYS, seed_rng);
         if(happy_selected_monkey->work != WRITER || i > 100){
           work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read);
         }
-      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, main_queue, read_file, stats_queue, writer_queue);
+      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, &main_queue, read_file, stats_queue, &writer_queue);
       i++;
     }
     //---
