@@ -65,21 +65,24 @@ int main(int argc, char* argv[])
     }
     if(read_file == NULL){
         printf("Nom de fichier incorrect ou manquant\n");
-        printf("YO\n");
         return 1;
     }
-    struct queue main_queue;
+    struct queue reader_queue_a;
+    struct queue reader_queue_b;
     struct successors_queue stats_queue;
-    struct queue writer_queue;
+    struct queue writer_queue_a;
+    struct queue writer_queue_b;
     struct queue words_of_max_occurency;
     struct queue words_of_min_occurency;
-    init_queue(&main_queue);
-    init_queue(&writer_queue);
+    init_queue(&reader_queue_a);
+    init_queue(&reader_queue_b);
+    init_queue(&writer_queue_a);
+    init_queue(&writer_queue_b);
     init_successors_queue(&stats_queue);
     init_queue(&words_of_max_occurency);
     init_queue(&words_of_min_occurency);
     struct monkey monkeyz[NUMBER_OF_MONKEYS]; //Number of Monkeys is defined in monkeyz.h
-    init_monkeys(monkeyz, NUMBER_OF_MONKEYS);
+    init_monkeys(monkeyz, NUMBER_OF_MONKEYS,&writer_queue_a,&writer_queue_b,&reader_queue_a,&reader_queue_a);
     struct cell last_word_read;
     strcpy(last_word_read.word,"");
     if(seed_rng == 0) //If no -s option has been declared
@@ -92,23 +95,25 @@ int main(int argc, char* argv[])
     // Main Algorithm
     //---
     int i = 0;
-    filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, &main_queue, read_file, stats_queue, &writer_queue);
+    filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, read_file, stats_queue);
     while(!is_all_on_strike(monkeyz,NUMBER_OF_MONKEYS) && i < MAX_NUMBER_OF_ROUNDS){
         struct monkey* happy_selected_monkey = random_select(monkeyz, NUMBER_OF_MONKEYS, seed_rng);
-        if(happy_selected_monkey->work != WRITER || i > 100){
-          work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read);
+        if((happy_selected_monkey->work != WRITER_1 || happy_selected_monkey->work != WRITER_1)|| i > 100){
+          work(happy_selected_monkey, &stats_queue, read_file, &last_word_read, monkeyz);
         }
-      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, &main_queue, read_file, stats_queue, &writer_queue);
+      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, read_file, stats_queue);
       i++;
     }
     //---
     // End of Main Algorithm
     //---
 
-    printf("\nRead words : %d \n",monkeyz[0].read_words);
+    printf("\nRead words : %d \n",monkeyz[READER_1].read_words+monkeyz[READER_2].read_words);
     //Purge
-    purge_queue(&main_queue);
-    purge_queue(&writer_queue);
+    purge_queue(&reader_queue_a);
+    purge_queue(&reader_queue_b);
+    purge_queue(&writer_queue_a);
+    purge_queue(&writer_queue_b);
     purge_successors_queue(&stats_queue);
     purge_queue(&words_of_max_occurency);
     purge_queue(&words_of_min_occurency);
