@@ -147,6 +147,26 @@ void queue_cpy(struct queue* source, struct queue* dest)
     }
 }
 
+int total_multiplicity_of_queue(const struct queue* source) {
+    int total_multiplicity = 0;
+    struct cell* ptr = source->first;
+    while (ptr!=NULL) {
+	total_multiplicity += ptr->was_read_by_statistician;
+	ptr = ptr->next;
+    }
+    return total_multiplicity;
+    
+}
+
+struct cell* nth_queue_element_with_multiplicity(const struct queue* source, int n) {
+    struct cell* ptr = source->first;
+    while( ptr!=NULL&&n>0 ) {
+	n -= ptr->was_read_by_statistician;
+	ptr = ptr->next;
+    }
+    return ptr;
+} 
+
 //
 //----
 // Stats functions

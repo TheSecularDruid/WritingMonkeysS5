@@ -78,27 +78,30 @@ int main(int argc, char* argv[])
     init_successors_queue(&stats_queue);
     init_queue(&words_of_max_occurency);
     init_queue(&words_of_min_occurency);
-    struct monkey monkeyz[NUMBER_OF_MONKEYS]; //Number of Monkeys is defined in monkeyz.h
-    init_monkeys(monkeyz, NUMBER_OF_MONKEYS);
+    struct monkey monkeyz[NUMBER_OF_MONKEYZ]; //Number of Monkeys is defined in monkeyz.h
+    init_monkeys(monkeyz);
     struct cell last_word_read;
     strcpy(last_word_read.word,"");
     if(seed_rng == 0) //If no -s option has been declared
         srand(time(NULL));
     else
         srand(seed_rng);
+
+    char memorized_word[MAX_WORD_LENGTH] = {'.'};
+    int writer_sentence_length = 0;
     //End of Initialization
 
     //---
     // Main Algorithm
     //---
     int i = 0;
-    filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, &main_queue, read_file, stats_queue, &writer_queue);
-    while(!is_all_on_strike(monkeyz,NUMBER_OF_MONKEYS) && i < MAX_NUMBER_OF_ROUNDS){
-        struct monkey* happy_selected_monkey = random_select(monkeyz, NUMBER_OF_MONKEYS, seed_rng);
+    filter_active_monkeys(monkeyz, &main_queue, read_file, stats_queue, &writer_queue);
+    while(!is_all_on_strike(monkeyz) && i < MAX_NUMBER_OF_ROUNDS){
+        struct monkey* happy_selected_monkey = random_select(monkeyz, seed_rng);
         if(happy_selected_monkey->work != WRITER || i > 100){
-          work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read);
+	    work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read, &writer_sentence_length, memorized_word);
         }
-      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, &main_queue, read_file, stats_queue, &writer_queue);
+      filter_active_monkeys(monkeyz, &main_queue, read_file, stats_queue, &writer_queue);
       i++;
     }
     //---

@@ -4,7 +4,9 @@
 #include "../Queue/queue.h"
 #include "../Queue/successors_queue.h"
 
-enum WORK_S { READER, STATISTICIAN, PRINTER, WRITER, NUMBER_OF_MONKEYS };
+#define NUMBER_OF_MONKEYZ 4
+
+enum WORK_S { READER, STATISTICIAN, PRINTER, WRITER };
 
 struct monkey {
    int status ;         //boolean, equals 0 if on strike, 1 if active
@@ -17,12 +19,12 @@ struct monkey {
 //  Global Functions
 //-----------------
 //
-void init_monkeys(struct monkey monkeyz[], int length);
+void init_monkeys(struct monkey monkeyz[]);
 int read_already(struct cell);
-void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue* main_queue, FILE* filename, struct successors_queue stats, struct queue* writer_queue);
-int is_all_on_strike(struct monkey monkeyz[], int length);
-void work(struct monkey* monkeyz, struct queue* main_queue, struct successors_queue* stats, FILE* filename, struct queue* writer_queue, struct cell* last_word_read); // Principal work function for the monkey
-struct monkey* random_select(struct monkey monkeyz[], int length, int random);
+void filter_active_monkeys(struct monkey monkeyz[], struct queue* main_queue, FILE* filename, struct successors_queue stats, struct queue* writer_queue);
+int is_all_on_strike(struct monkey monkeyz[]);
+void work(struct monkey* monkeyz, struct queue* main_queue, struct successors_queue* stats, FILE* filename, struct queue* writer_queue, struct cell* last_word_read, int* writer_sentence_length, char memorized_word[]); // Principal work function for the monkeyz
+struct monkey* random_select(struct monkey monkeyz[], int random);
 //
 //--------------------
 //  Reader Monkey
@@ -43,21 +45,22 @@ void statistician_work(struct monkey monkey, struct successors_queue* stats, str
 //  Printer Monkey
 //--------------------
 //
-int is_a_simple_punc_sign(char word[]); //check wether word is a standard word/a double ponctuation sign or a simple ponctuation sign
-int printer_work(struct monkey* monkey, struct queue* main_queue);  //execute the work of a printer monkey
+int is_a_simple_punc_sign(char word[]); //checks whether word is a standard word/a double ponctuation sign or a simple ponctuation sign
+int printer_work(struct monkey* monkey, struct queue* main_queue);  //executes the work of a printer monkey
 //
 //--------------------
 //  Writer Monkey
 //--------------------
 //
-void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_queue, struct queue* writer_queue); //Does the work of the greatest monkey : The writer
+void generate_punctuation(struct queue* writer_queue, int writer_sentence_length); //Generates a punctuation mark (in a new cell added to the queue) when the writer monkey needs to end a sentence.
+void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]); //Does the work of the greatest monkey : The writer
 //
 //--------------------
 //  Debuggs Functions
 //--------------------
 //
-void print_monkey(struct monkey monkey); //Print the data contained in a struct monkey
-void print_monkeys(struct monkey monkeyz[], int length); //print a table of monkeyz, one by line
+void print_monkey(struct monkey monkey); //Prints the data contained in a struct monkey
+void print_monkeys(struct monkey monkeyz[]); //prints a table of monkeyz, one by line
 
 
 #endif
