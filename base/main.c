@@ -4,6 +4,7 @@
 #include "Queue/queue.h"
 #include "Monkeyz/monkeyz.h"
 
+#define NB_OF_MONKEYZ 3
 
 int reading_arguments(int* seed_rng, FILE** read_file, int argc, char* argv[])
 {
@@ -72,18 +73,18 @@ int main(int argc, char* argv[])
   init_queue(&stats_queue);
   init_queue(&words_of_max_occurency);
   init_queue(&words_of_min_occurency);
-  struct monkey monkeyz[3];
-  init_monkeys(monkeyz, 3);
+  struct monkey monkeyz[NB_OF_MONKEYZ];
+  init_monkeys(monkeyz, NB_OF_MONKEYZ);
   //End of Initialization
 
   //---
   // Main Algorithm
   //---
-  filter_active_monkeys(monkeyz, 3, main_queue, read_file);
+  filter_active_monkeys(monkeyz, NB_OF_MONKEYZ, main_queue, read_file);
   while(!all_on_strike(monkeyz)){
-    struct monkey* happy_selected_monkey = random_select(monkeyz, 3, seed_rng);
+    struct monkey* happy_selected_monkey = random_select(monkeyz, NB_OF_MONKEYZ, seed_rng);
     work(happy_selected_monkey, &main_queue, &stats_queue, read_file);
-    filter_active_monkeys(monkeyz, 3, main_queue, read_file);
+    filter_active_monkeys(monkeyz, NB_OF_MONKEYZ, main_queue, read_file);
   }
   //---
   // End of Main Algorithm
