@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
     //---
     int i = 0;
     filter_active_monkeys(monkeyz, &main_queue, read_file, stats_queue, &writer_queue);
-    while(!is_all_on_strike(monkeyz) && i < MAX_NUMBER_OF_ROUNDS){
+    while(!are_all_on_strike(monkeyz) && i < MAX_NUMBER_OF_ROUNDS){
         struct monkey* happy_selected_monkey = random_select(monkeyz, seed_rng);
         if(happy_selected_monkey->work != WRITER || i > 100){
 	    work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read, &writer_sentence_length, memorized_word);

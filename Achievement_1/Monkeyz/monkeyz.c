@@ -26,7 +26,6 @@ int read_already(struct cell cell) {
    return cell.was_read_by_statistician;
 }
 
-//TO MODIFY
 void filter_active_monkeys(struct monkey monkeyz[], struct queue* main_queue, FILE* filename, struct successors_queue stats, struct queue* writer_queue){
     for (int i=0;i<NUMBER_OF_MONKEYZ;i=i+1) {
         switch(monkeyz[i].work) {
@@ -59,7 +58,7 @@ void filter_active_monkeys(struct monkey monkeyz[], struct queue* main_queue, FI
 }
 
 
-int is_all_on_strike(struct monkey monkeyz[])
+int are_all_on_strike(struct monkey monkeyz[])
 {
     for(int i = 0; i < NUMBER_OF_MONKEYZ; i++){
         if(monkeyz[i].status == 1)
