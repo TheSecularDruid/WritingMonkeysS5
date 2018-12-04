@@ -96,6 +96,7 @@ int main(int argc, char* argv[])
   init_queue(&max_occurency_queue);
   init_queue(&min_occurency_queue);
 
+
   greatest_occurency(&stats_queue,&max_occurency_queue);
   minimal_occurency(&stats_queue,&min_occurency_queue);
   printf("Maximum Occurency : \n");

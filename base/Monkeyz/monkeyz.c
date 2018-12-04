@@ -45,6 +45,7 @@ void filter_active_monkeys(struct monkey monkeyz[], int length, struct queue FIF
                 monkeyz[i].status = 0;
             else
                 monkeyz[i].status = 1;
+            break;
         }
     }
 }
@@ -154,6 +155,8 @@ void statistician_work(struct queue* stats, struct queue* main_queue) {
     }
     else {
         struct cell* first_word = malloc(sizeof(struct cell));
+        struct cell* ptr = main_queue->first;
+        cell_cpy(ptr,first_word);
         add_in_queue (first_word, stats);
         stats->last->was_read_by_statistician += 1;
     }
