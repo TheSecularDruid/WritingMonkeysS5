@@ -60,10 +60,10 @@ void print_successors_queue(struct successors_queue queue_to_print)
       printf("The successors queue is empty \n");
 }
 
-struct successors_cell* research_word_in_successors_queue(struct successors_queue source, char* word)
+struct successors_cell* research_word_in_successors_queue(struct successors_queue* source, char* word)
 {
-    struct successors_cell* ptr = source.first;
-    if(!is_successors_queue_empty(source)){
+    struct successors_cell* ptr = source->first;
+    if(!is_successors_queue_empty(*source)){
       while(ptr != NULL){
         if(strcmp(word,ptr->word) == 0)
           return ptr;
