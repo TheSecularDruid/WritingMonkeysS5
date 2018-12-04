@@ -15,6 +15,7 @@ struct monkey {
    FILE* my_source_text;
    char memorized_word[MAX_WORD_LENGTH];
    int sentence_length;
+   int sentence_finished;
 };
 //
 //-----------------
@@ -30,7 +31,7 @@ int read_already(struct cell);
 //----------------
 //
 int should_statisician_work(const struct monkey* mon_read_1, const struct monkey* mon_read_2);
-int should_writer_work(const struct successors_queue* stats);
+int should_writer_work(const struct successors_queue* stats, struct monkey* writer_monkey);
 int should_reader_work(const struct monkey* mon);
 int should_printer_work(const struct monkey* writer_one, const struct monkey* writer_two);
 void filter_active_monkeys(struct monkey monkeyz[], int length, struct successors_queue stats);

@@ -6,7 +6,7 @@
 #include <time.h>
 #include <getopt.h>
 
-#define MAX_NUMBER_OF_ROUNDS 5000
+#define MAX_NUMBER_OF_ROUNDS 600
 
 
 int reading_arguments(int* seed_rng, FILE** read_file_1, FILE** read_file_2, int argc, char* argv[])
@@ -103,8 +103,10 @@ int main(int argc, char* argv[])
     //Initializing the writers
     strcpy(monkeyz[WRITER_1].memorized_word,".");
     monkeyz[WRITER_1].sentence_length = 0;
+    monkeyz[WRITER_1].sentence_finished = 0;
     strcpy(monkeyz[WRITER_2].memorized_word,".");
     monkeyz[WRITER_2].sentence_length = 0;
+    monkeyz[WRITER_2].sentence_finished = 0;
     //End of Initialization
 
     //---
