@@ -134,19 +134,6 @@ struct cell* research_cell(struct queue* source, int position)
     return ptr;
 }
 
-//NEW TO TEST
-void queue_cpy(struct queue* source, struct queue* dest)
-{
-    struct cell* ptr = source->first;
-    while(ptr != NULL){
-        struct cell* buffer = malloc(sizeof(struct cell));
-        cell_cpy(ptr,buffer);
-        buffer->next = NULL;
-        add_in_queue(buffer,dest);
-        ptr = ptr->next;
-    }
-}
-
 int total_multiplicity_of_queue(const struct queue* source) {
     int total_multiplicity = 0;
     struct cell* ptr = source->first;
@@ -164,6 +151,8 @@ struct cell* nth_queue_element_with_multiplicity(const struct queue* source, int
 	n -= ptr->was_read_by_statistician;
 	ptr = ptr->next;
     }
+    if (ptr==NULL)
+	return source->last;
     return ptr;
 } 
 
