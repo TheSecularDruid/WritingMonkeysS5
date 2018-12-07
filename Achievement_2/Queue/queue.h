@@ -29,6 +29,8 @@ void print_cell(struct cell* cell_to_print); //Print a cell
 int length_queue(struct queue* queue); //Returns the length of a queue given in argument
 void print_queue_light(struct queue* queue);//Prints the words contained in the queue, separated by periods
 void queue_cpy(struct queue* source, struct queue* dest); //Copy every cell of a queue to another one
+int total_multiplicity_of_queue(const struct queue* source);//return the sum of the multiplicities of all cells in the queue
+struct cell* nth_queue_element_with_multiplicity(const struct queue* source, int n);//returns the cell containing the 'nth' multiplicity, used for ponderated random choices, starting at 0
 //--
 // Stats functions
 //--
