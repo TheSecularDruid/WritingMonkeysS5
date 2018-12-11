@@ -54,6 +54,9 @@ int printer_work(struct monkey* monkey, struct queue* main_queue);  //executes t
 //--------------------
 //
 void generate_punctuation(struct queue* writer_queue, int writer_sentence_length); //Generates a punctuation mark (in a new cell added to the queue) when the writer monkey needs to end a sentence.
+void new_sentence(struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]);//Does the necessary to start a sentence in optimal conditions
+void continue_sentence(struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]); //Simply checks whether the sentence shall end, and if not adds a word following the random successors procedure
+void end_sentence(struct queue* writer_queue, int* writer_sentence_length);//Does the necessary to end a sentence in optimal conditions
 void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]); //Does the work of the greatest monkey : The writer
 //
 //--------------------

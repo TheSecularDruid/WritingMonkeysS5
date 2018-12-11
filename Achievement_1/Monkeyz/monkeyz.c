@@ -226,26 +226,41 @@ void generate_punctuation(struct queue* writer_queue, int writer_sentence_length
     }
 }
 
+void new_sentence(struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]) {
+    int length = length_successors_queue(*stats_queue);
+    struct successors_cell* random_word = research_successors_cell(stats_queue, rand()%length);
+    struct cell* new_word = malloc(sizeof(struct cell));
+    strcpy(new_word->word,random_word->word);
+    add_in_queue(new_word, writer_queue);
+    strcpy(memorized_word,random_word->word);
+    *writer_sentence_length = 1;
+}
+
+void continue_sentence(struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]) {
+    struct successors_cell* selected_word = research_word_in_successors_queue(stats_queue, memorized_word);
+    if ( (rand()%10!=0) && !is_queue_empty(&(selected_word->successors)) ){ //for the 10% chance to randomly interrupt a sentence, ie 90% chance to normally continue it
+	struct cell* successor = random_successor(selected_word);
+	struct cell* written_word = malloc(sizeof(struct cell));
+	cell_cpy(successor,written_word);
+	add_in_queue(written_word,writer_queue);
+	*writer_sentence_length+=1;
+	strcpy(memorized_word,written_word->word);
+    }
+    else
+	end_sentence(writer_queue, writer_sentence_length);
+}
+
+void end_sentence(struct queue* writer_queue, int* writer_sentence_length){
+    generate_punctuation(writer_queue, *writer_sentence_length);
+    *writer_sentence_length = 0;
+}
+
 void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[])
 {
-    struct successors_cell* ptr = NULL;
-    if (ispunct(memorized_word[0])){
-	int length = length_successors_queue(*stats_queue);
-        ptr = research_successors_cell(stats_queue,rand()%length);
-    } else
-        ptr = research_word_in_successors_queue(stats_queue, memorized_word);
-    
-    if( (rand()%10==0) || is_queue_empty(&(ptr->successors)) ){
-	generate_punctuation(writer_queue, *writer_sentence_length);
-	memorized_word[0] = '.';
-	*writer_sentence_length = 0;
-    } else{
-	int length_of_suc = total_multiplicity_of_queue(&(ptr->successors));
-	struct cell* successor = nth_queue_element_with_multiplicity(&(ptr->successors),rand()%length_of_suc);
-	struct cell* buffer = malloc(sizeof(struct cell));
-	cell_cpy(successor,buffer);
-	add_in_queue(buffer,writer_queue);
-	*writer_sentence_length += 1;
+    if (*writer_sentence_length==0){
+	new_sentence(stats_queue, writer_queue, writer_sentence_length, memorized_word);
+    } else {
+	continue_sentence(stats_queue, writer_queue, writer_sentence_length, memorized_word);
     }
 }
 
