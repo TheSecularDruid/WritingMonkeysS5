@@ -1,5 +1,5 @@
 CFLAGS=-Wall -g3 -std=c99
-CURRENT_GOAL=Achievement_2
+CURRENT_GOAL=base
 
 
 main : queue.o successors_queue.o monkeyz.o main.o
