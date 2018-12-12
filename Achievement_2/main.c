@@ -44,19 +44,6 @@ void print_usage()
     printf("Usage : ./main [-s] FILE\n");
 }
 
-
-// void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ) {
-//     printf("Nombre de mots lus : %d \n", monkeyz[0].read_words);
-//     printf("Nombre de mots imprimés : %d \n", monkeyz[2].printed_words);
-//     printf("Nombre de mots différents : %d \n", length_queue(stats));
-//     printf("Multiplicité la plus grande : %d \n", max_occ.first->was_read_by_statistician);
-//     printf("atteinte par les mots : ");
-//     print_queue_light(max_occ);
-//     printf("Multiplicité la plus petite : %d \n", min_occ.first->was_read_by_statistician);
-//     printf("atteinte par les mots : ");
-//     print_queue_light(min_occ);
-// }
-
 int main(int argc, char* argv[])
 {
     //Initialization
@@ -64,10 +51,13 @@ int main(int argc, char* argv[])
     FILE* read_file_2 = NULL;
     int seed_rng = 0;
 
+    //Args number test. Quit the program if it doesn't have enough args.
     if(argc > 6 || argc == 1){
         print_usage();
         exit(EXIT_SUCCESS);
     }
+
+    //Reading arguments...
     int error_code = reading_arguments(&seed_rng, &read_file_1, &read_file_2, argc, argv);
     if(error_code == 1){
         printf("Erreur lors de la lecture des arguments\n");
@@ -82,6 +72,7 @@ int main(int argc, char* argv[])
     else
         srand(seed_rng);
 
+    //Queue Initializing
     struct queue reader_queue_a;
     struct queue reader_queue_b;
     struct queue writer_queue_a;
@@ -93,12 +84,9 @@ int main(int argc, char* argv[])
     init_queue(&writer_queue_b);
     init_successors_queue(&stats_queue);
 
+    //Monkey initializing
     struct monkey monkeyz[NUMBER_OF_MONKEYS]; //Number of Monkeys is defined in monkeyz.h
     init_monkeys(monkeyz, NUMBER_OF_MONKEYS,&writer_queue_a,&writer_queue_b,&reader_queue_a,&reader_queue_b,read_file_1,read_file_2);
-
-    struct cell last_word_read;
-    strcpy(last_word_read.word,"");
-
 
     //Initializing the writers
     strcpy(monkeyz[WRITER_1].memorized_word,".");
@@ -106,6 +94,7 @@ int main(int argc, char* argv[])
     monkeyz[WRITER_1].sentence_finished = 0;
     strcpy(monkeyz[WRITER_2].memorized_word,".");
     monkeyz[WRITER_2].sentence_length = 0;
+    monkeyz[WRITER_2].sentence_finished = 0;
     monkeyz[WRITER_2].sentence_finished = 0;
     //End of Initialization
 
@@ -116,11 +105,15 @@ int main(int argc, char* argv[])
     filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, stats_queue);
     while(!is_all_on_strike(monkeyz,NUMBER_OF_MONKEYS) && i < MAX_NUMBER_OF_ROUNDS){
         struct monkey* happy_selected_monkey = random_select(monkeyz, NUMBER_OF_MONKEYS, seed_rng);
-        if((happy_selected_monkey->work != WRITER_1 || happy_selected_monkey->work != WRITER_2)|| i > 100){
-          work(happy_selected_monkey, &stats_queue, &last_word_read, monkeyz);
-        }
-      filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, stats_queue);
-      i++;
+
+        if(happy_selected_monkey->work != WRITER_1 && happy_selected_monkey->work != WRITER_2)
+            happy_selected_monkey->work_function(happy_selected_monkey, &stats_queue, monkeyz);
+        else
+            if(i >= 100)
+                happy_selected_monkey->work_function(happy_selected_monkey, &stats_queue, monkeyz);
+
+        filter_active_monkeys(monkeyz, NUMBER_OF_MONKEYS, stats_queue);
+        i++;
     }
     //---
     // End of Main Algorithm
