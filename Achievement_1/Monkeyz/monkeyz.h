@@ -22,7 +22,7 @@ struct monkey {
 void init_monkeys(struct monkey monkeyz[]);
 int read_already(struct cell);
 void filter_active_monkeys(struct monkey monkeyz[], struct queue* main_queue, FILE* filename, struct successors_queue stats, struct queue* writer_queue);
-int is_all_on_strike(struct monkey monkeyz[]);
+int are_all_on_strike(struct monkey monkeyz[]);
 void work(struct monkey* monkeyz, struct queue* main_queue, struct successors_queue* stats, FILE* filename, struct queue* writer_queue, struct cell* last_word_read, int* writer_sentence_length, char memorized_word[]); // Principal work function for the monkeyz
 struct monkey* random_select(struct monkey monkeyz[], int random);
 //
@@ -30,10 +30,11 @@ struct monkey* random_select(struct monkey monkeyz[], int random);
 //  Reader Monkey
 //--------------------
 //
-int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* filename); //Does the work of a reader monkey
-void read_a_word(char* word, FILE* filename); //Read a single word (of a maximum length of MAX_WORD_LENGTH) from filename
 int is_a_letter(char ch); //tests whether a given character is a letter or not
 int is_a_number(char ch); //tests whether a given character is a number or not
+void read_a_word(char* word, FILE* filename); //Read a single word (of a maximum length of MAX_WORD_LENGTH) from filename
+void to_lower_string(char* str); //Changes the case of a character string to make it into a lower case string
+int reader_work(struct monkey* reader_monkey, struct queue* main_queue, FILE* filename); //Does the work of a reader monkey
 //
 //--------------------
 //  Statistician monkey
@@ -53,6 +54,9 @@ int printer_work(struct monkey* monkey, struct queue* main_queue);  //executes t
 //--------------------
 //
 void generate_punctuation(struct queue* writer_queue, int writer_sentence_length); //Generates a punctuation mark (in a new cell added to the queue) when the writer monkey needs to end a sentence.
+void new_sentence(struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]);//Does the necessary to start a sentence in optimal conditions
+void continue_sentence(struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]); //Simply checks whether the sentence shall end, and if not adds a word following the random successors procedure
+void end_sentence(struct queue* writer_queue, int* writer_sentence_length);//Does the necessary to end a sentence in optimal conditions
 void writer_work(struct monkey* writer_monkey, struct successors_queue* stats_queue, struct queue* writer_queue, int* writer_sentence_length, char memorized_word[]); //Does the work of the greatest monkey : The writer
 //
 //--------------------

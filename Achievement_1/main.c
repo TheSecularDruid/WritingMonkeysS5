@@ -36,19 +36,6 @@ void print_usage()
     printf("Usage : ./main [-s] FILE\n");
 }
 
-
-// void total_print(struct monkey monkeyz[], struct queue stats, struct queue max_occ, struct queue min_occ) {
-//     printf("Nombre de mots lus : %d \n", monkeyz[0].read_words);
-//     printf("Nombre de mots imprimés : %d \n", monkeyz[2].printed_words);
-//     printf("Nombre de mots différents : %d \n", length_queue(stats));
-//     printf("Multiplicité la plus grande : %d \n", max_occ.first->was_read_by_statistician);
-//     printf("atteinte par les mots : ");
-//     print_queue_light(max_occ);
-//     printf("Multiplicité la plus petite : %d \n", min_occ.first->was_read_by_statistician);
-//     printf("atteinte par les mots : ");
-//     print_queue_light(min_occ);
-// }
-
 int main(int argc, char* argv[])
 {
     //Initialization
@@ -96,7 +83,7 @@ int main(int argc, char* argv[])
     //---
     int i = 0;
     filter_active_monkeys(monkeyz, &main_queue, read_file, stats_queue, &writer_queue);
-    while(!is_all_on_strike(monkeyz) && i < MAX_NUMBER_OF_ROUNDS){
+    while(!are_all_on_strike(monkeyz) && i < MAX_NUMBER_OF_ROUNDS){
         struct monkey* happy_selected_monkey = random_select(monkeyz, seed_rng);
         if(happy_selected_monkey->work != WRITER || i > 100){
 	    work(happy_selected_monkey, &main_queue, &stats_queue, read_file, &writer_queue, &last_word_read, &writer_sentence_length, memorized_word);

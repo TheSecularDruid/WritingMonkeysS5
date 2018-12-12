@@ -115,3 +115,9 @@ void purge_successors_queue(struct successors_queue* to_purge)
     }
 
 }
+
+struct cell* random_successor(struct successors_cell* selected_word){
+    int length_of_succ = total_multiplicity_of_queue(&(selected_word->successors));
+    struct cell* successor = nth_queue_element_with_multiplicity(&(selected_word->successors), rand()%length_of_succ);
+    return(successor);
+}
