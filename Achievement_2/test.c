@@ -81,7 +81,7 @@ void delete_cells(int nb_to_del,struct queue* queue)
 {
     for(int i = 0; i < nb_to_del; i++)
     {
-        pop_queue(queue);
+        remove_in_queue(queue);
     }
 }
 
@@ -196,10 +196,10 @@ void research_in_queue_test(struct queue* queue)
     printf(GRN "OK\n" RESET);
 }
 
-void reader_work_cond_test(FILE* filename,FILE* filename2)
+void reader_work_cond_test(char* source_text)
 {
-    FILE* read_file_1 = filename;
-    FILE* read_file_2 = filename2;
+    FILE* filename = fopen(source_text,"r");
+    FILE* filename2 = fopen(source_text,"r");
 
     struct queue reader_queue_a;
     struct queue reader_queue_b;
@@ -213,7 +213,7 @@ void reader_work_cond_test(FILE* filename,FILE* filename2)
     init_successors_queue(&stats_queue);
 
     struct monkey monkeyz[NUMBER_OF_MONKEYS];
-    init_monkeys(monkeyz, NUMBER_OF_MONKEYS,&writer_queue_a,&writer_queue_b,&reader_queue_a,&reader_queue_b,read_file_1,read_file_2);
+    init_monkeys(monkeyz, NUMBER_OF_MONKEYS,&writer_queue_a,&writer_queue_b,&reader_queue_a,&reader_queue_b,filename,filename2);
 
     strcpy(monkeyz[WRITER_1].memorized_word,".");
     monkeyz[WRITER_1].sentence_length = 0;
@@ -228,10 +228,12 @@ void reader_work_cond_test(FILE* filename,FILE* filename2)
     assert(should_reader_work(&monkeyz[READER_2]) == 1);
     struct cell* r_cla = malloc(sizeof(struct cell));
     struct cell* r_clb = malloc(sizeof(struct cell));
+    struct cell* r_clba = malloc(sizeof(struct cell));
+    struct cell* r_clbb = malloc(sizeof(struct cell));
     add_in_queue(r_cla,monkeyz[READER_1].my_queue);
     add_in_queue(r_clb,monkeyz[READER_1].my_queue);
-    add_in_queue(r_cla,monkeyz[READER_2].my_queue);
-    add_in_queue(r_clb,monkeyz[READER_2].my_queue);
+    add_in_queue(r_clba,monkeyz[READER_2].my_queue);
+    add_in_queue(r_clbb,monkeyz[READER_2].my_queue);
     assert(should_reader_work(&monkeyz[READER_1]) == 0);
     assert(should_reader_work(&monkeyz[READER_2]) == 0);
     purge_queue(monkeyz[READER_1].my_queue);
@@ -249,12 +251,14 @@ void reader_work_cond_test(FILE* filename,FILE* filename2)
     purge_queue(&writer_queue_a);
     purge_queue(&writer_queue_b);
     purge_successors_queue(&stats_queue);
+    fclose(filename);
+    fclose(filename2);
 }
 
-void statistician_work_cond_test(FILE* filename,FILE* filename2)
+void statistician_work_cond_test(char* source_text)
 {
-    FILE* read_file_1 = filename;
-    FILE* read_file_2 = filename2;
+    FILE* filename = fopen(source_text,"r");
+    FILE* filename2 = fopen(source_text,"r");
 
     struct queue reader_queue_a;
     struct queue reader_queue_b;
@@ -268,7 +272,64 @@ void statistician_work_cond_test(FILE* filename,FILE* filename2)
     init_successors_queue(&stats_queue);
 
     struct monkey monkeyz[NUMBER_OF_MONKEYS];
-    init_monkeys(monkeyz, NUMBER_OF_MONKEYS,&writer_queue_a,&writer_queue_b,&reader_queue_a,&reader_queue_b,read_file_1,read_file_2);
+    init_monkeys(monkeyz, NUMBER_OF_MONKEYS,&writer_queue_a,&writer_queue_b,&reader_queue_a,&reader_queue_b,filename,filename2);
+
+    printf("Testing statistician monkey working conditions...\n");
+    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 1);
+    struct cell* r_cla = malloc(sizeof(struct cell));
+    struct cell* r_clb = malloc(sizeof(struct cell));
+    struct cell* r_claa = malloc(sizeof(struct cell));
+    struct cell* r_clbb = malloc(sizeof(struct cell));
+
+    add_in_queue(r_claa,monkeyz[READER_1].my_queue);
+    add_in_queue(r_clbb,monkeyz[READER_1].my_queue);
+    add_in_queue(r_cla,monkeyz[READER_2].my_queue);
+    add_in_queue(r_clb,monkeyz[READER_2].my_queue);
+
+    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 0);
+    remove_in_queue(monkeyz[READER_1].my_queue);
+    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 0);
+    remove_in_queue(monkeyz[READER_2].my_queue);
+    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 1);
+
+    char ch = ' ';
+    while(ch = fgetc(monkeyz[READER_1].my_source_text) != EOF);
+    ch = ' ';
+    while(ch = fgetc(monkeyz[READER_2].my_source_text) != EOF);
+    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 0);
+    purge_queue(monkeyz[READER_1].my_queue);
+    purge_queue(monkeyz[READER_2].my_queue);
+    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 1);
+    printf(GRN "OK\n" RESET);
+
+    purge_queue(&reader_queue_a);
+    purge_queue(&reader_queue_b);
+    purge_queue(&writer_queue_a);
+    purge_queue(&writer_queue_b);
+    purge_successors_queue(&stats_queue);
+
+    fclose(filename);
+    fclose(filename2);
+}
+
+void printer_work_cond_test(char* source_text)
+{
+    FILE* filename = fopen(source_text,"r");
+    FILE* filename2 = fopen(source_text,"r");
+
+    struct queue reader_queue_a;
+    struct queue reader_queue_b;
+    struct queue writer_queue_a;
+    struct queue writer_queue_b;
+    struct successors_queue stats_queue;
+    init_queue(&reader_queue_a);
+    init_queue(&reader_queue_b);
+    init_queue(&writer_queue_a);
+    init_queue(&writer_queue_b);
+    init_successors_queue(&stats_queue);
+
+    struct monkey monkeyz[NUMBER_OF_MONKEYS];
+    init_monkeys(monkeyz, NUMBER_OF_MONKEYS,&writer_queue_a,&writer_queue_b,&reader_queue_a,&reader_queue_b,filename,filename2);
 
     strcpy(monkeyz[WRITER_1].memorized_word,".");
     monkeyz[WRITER_1].sentence_length = 0;
@@ -278,40 +339,24 @@ void statistician_work_cond_test(FILE* filename,FILE* filename2)
     monkeyz[WRITER_2].sentence_finished = 0;
     monkeyz[WRITER_2].sentence_finished = 0;
 
-    printf("Testing statistician monkey working conditions...\n");
-    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 1);
-    struct cell* r_cla = malloc(sizeof(struct cell));
-    struct cell* r_clb = malloc(sizeof(struct cell));
-    struct cell* r_claa = malloc(sizeof(struct cell));
-    struct cell* r_clbb = malloc(sizeof(struct cell));
-    add_in_queue(r_claa,monkeyz[READER_1].my_queue);
-    add_in_queue(r_clbb,monkeyz[READER_1].my_queue);
-    add_in_queue(r_cla,monkeyz[READER_2].my_queue);
-    add_in_queue(r_clb,monkeyz[READER_2].my_queue);
-    print_queue(monkeyz[READER_1].my_queue);
-
-    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 0);
-    printf("PASSED\n\n");
-
-    remove_in_queue(monkeyz[READER_1].my_queue);
-    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 0);
-    remove_in_queue(monkeyz[READER_1].my_queue);
-    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 1);
-
-    char ch = ' ';
-    while(ch = fgetc(monkeyz[READER_1].my_source_text) != EOF);
-    ch = ' ';
-    while(ch = fgetc(monkeyz[READER_2].my_source_text) != EOF);
-    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 0);
-    printf("\n\n\n");
-    purge_queue(monkeyz[READER_1].my_queue);
-    purge_queue(monkeyz[READER_2].my_queue);
-    assert(should_statisician_strike(&monkeyz[READER_1],&monkeyz[READER_2]) == 1);
+    printf("Testing printer monkey working conditions...\n");
+    assert(should_printer_work(&monkeyz[WRITER_1],&monkeyz[WRITER_2]) == 0);
+    monkeyz[WRITER_1].sentence_finished = 1;
+    monkeyz[WRITER_2].sentence_finished = 1;
+    assert(should_printer_work(&monkeyz[WRITER_1],&monkeyz[WRITER_2]) == 1);
+    monkeyz[WRITER_1].sentence_finished = 0;
+    assert(should_printer_work(&monkeyz[WRITER_1],&monkeyz[WRITER_2]) == 1);
+    monkeyz[WRITER_2].sentence_finished = 0;
+    assert(should_printer_work(&monkeyz[WRITER_1],&monkeyz[WRITER_2]) == 0);
     printf(GRN "OK\n" RESET);
 
+    purge_queue(&reader_queue_a);
+    purge_queue(&reader_queue_b);
     purge_queue(&writer_queue_a);
     purge_queue(&writer_queue_b);
     purge_successors_queue(&stats_queue);
+    fclose(filename);
+    fclose(filename2);
 }
 
 void research_cell_test(struct queue* queue)
@@ -338,8 +383,6 @@ void research_cell_test(struct queue* queue)
 int main(int argc, char* argv[])
 {
     struct queue my_queue;
-    FILE* filename = fopen("../base/source.txt","r");
-    FILE* filename2 = fopen("../base/source.txt","r");
     init_queue(&my_queue);
 
     printf("Queue part :\n\n");
@@ -351,13 +394,14 @@ int main(int argc, char* argv[])
     research_in_queue_test(&my_queue);
     research_cell_test(&my_queue);
 
-    printf("Monkey part:\n\n");
-    reader_work_cond_test(filename,filename2);
-    //statistician_work_cond_test(filename,filename2);
-
     purge_queue(&my_queue);
-    fclose(filename);
-    fclose(filename2);
+
+    printf("Monkey part:\n\n");
+    statistician_work_cond_test("../base/source.txt");
+    reader_work_cond_test("../base/source.txt");
+    printer_work_cond_test("../base/source.txt");
+
+
 
     if(er)
         printf(RED "Error" RESET "\n");
