@@ -5,7 +5,7 @@
 #include "Monkeyz/monkeyz.h"
 #include <time.h>
 
-#define MAX_NUMBER_OF_ROUNDS 300
+#define MAX_NUMBER_OF_ROUNDS 1000
 
 
 int reading_arguments(int* seed_rng, FILE** read_file, int argc, char* argv[])
