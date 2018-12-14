@@ -5,6 +5,7 @@ main : queue.o monkeyz.o main.o successors_queue.o
 
 test : queue.o monkeyz.o test.o successors_queue.o
 	gcc queue.o monkeyz.o test.o successors_queue.o $(CFLAGS) -o test
+	./test
 
 main.o : main.c
 	gcc -o main.o -c main.c $(CFLAGS)
@@ -24,5 +25,5 @@ successors_queue.o : Queue/successors_queue.c Queue/successors_queue.h
 clean :
 	rm project queue.o monkeyz.o main.o successors_queue.o
 
-test_clean :
+clean_test :
 	rm test queue.o monkeyz.o successors_queue.o test.o

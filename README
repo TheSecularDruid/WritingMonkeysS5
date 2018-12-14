@@ -1,0 +1,22 @@
+---
+Introduction
+---
+
+Projet réalisé par Kaïs-Khan Hadi et Raphaël Giliot.
+Réalisé en C.
+
+---
+Utilisation du makefile
+---
+
+Pour compiler le projet, veuillez vous placer dans le dossier de la version que vous souhaitez compiler, pour ensuite compiler le projet
+à l'aide de make
+
+----
+Regles
+---
+
+make -- lance la compilation du projet
+make clean -- nettoie l'arborescence de fichiers
+make test -- compile et lance les tests de programmation
+make clean_test -- nettoie l'arborescence de fichiers (des fichiers de compilation de test, cette fois-ci)
