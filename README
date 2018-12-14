@@ -7,6 +7,10 @@ Réalisé en C.
 IMPORTANT :
     La version actuellement compilée sur la forge est l'Achievement_1.
     Il existe plus de tests sur l'Achievement_2 que sur l'Achievement_1.
+    Toutes les versions de notre programme (à savoir base, Achievement_1 ainsi qu'Achievement_2) fonctionnent et sont opérationnels.
+    L'Achievement_2 ne passe pas tous les tests de la forge car il n'affiche pas le nombre de mots lus (ce qu'il pourrait faire),
+    mais rempli cependant les contraintes de son énoncé.
+
 ---
 Utilisation du makefile
 ---
