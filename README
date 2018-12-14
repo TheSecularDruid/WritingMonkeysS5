@@ -4,7 +4,9 @@ Introduction
 
 Projet réalisé par Kaïs-Khan Hadi et Raphaël Giliot.
 Réalisé en C.
-
+IMPORTANT :
+    La version actuellement compilée sur la forge est l'Achievement_1.
+    Il existe plus de tests sur l'Achievement_2 que sur l'Achievement_1.
 ---
 Utilisation du makefile
 ---
